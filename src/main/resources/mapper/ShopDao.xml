@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tyron.o2o.dao.ShopDao">
+
+	<resultMap id="shopMap" type="com.tyron.o2o.entity.Shop">
+		<!-- 主键 -->
+		<id column="shop_id" property="shopId" />
+		<!--column对应库表中的字段名 property对应实体类中的属性名 -->
+		<result column="shop_name" property="shopName" />
+		<result column="shop_desc" property="shopDesc" />
+		<result column="shop_addr" property="shopAddr" />
+		<result column="phone" property="phone" />
+		<result column="shop_img" property="shopImg" />
+		<result column="create_time" property="createTime" />
+		<result column="last_edit_time" property="lastEditTime" />
+		<result column="enable_status" property="enableStatus" />
+		<result column="advice" property="advice" />
+
+		<!-- 复合对象 -->
+		<association column="owner_id" property="owner"
+			javaType="com.tyron.o2o.entity.PersonInfo">
+			<id column="user_id" property="userId" />
+			<result column="name" property="name" />
+		</association>
+
+		<association column="area_id" property="area"
+			javaType="com.tyron.o2o.entity.Area">
+			<id column="area_id" property="areaId" />
+			<result column="area_name" property="areaName" />
+		</association>
+
+		<association property="shopCategory" column="shop_category_id"
+			javaType="com.tyron.o2o.entity.ShopCategory">
+			<id column="shop_category_id" property="shopCategoryId" />
+			<result column="shop_category_name" property="shopCategoryName" />
+		</association>
+	</resultMap>
+	
+	<sql id="selectShopByCondition">
+		<!-- 可输入的查询条件：
+			商铺名（要求模糊查询） 
+			区域Id 
+			商铺状态 
+			商铺类别 
+			owner 
+		(注意在sqlmapper中按照前端入参拼装不同的查询语句) -->
+		<!-- 商铺名（要求模糊查询） -->
+		<if test="shopCondition.shopName != null and '' != shopCondition.shopName">
+			<!--  两种写法都可以 注意第二种是 ${}传值 -->
+			<!-- 
+			#{}和${}
+			#{}表示一个占位符号，通过#{}可以实现preparedStatement向占位符中设置值，自动进行java类型和jdbc类型转换，
+				#{}可以有效防止sql注入。 #{}可以接收简单类型值或pojo属性值。
+				 如果parameterType传输单个简单类型值，#{}括号中可以是value或其它名称。
+				 
+			${}表示拼接sql串，通过${}可以将parameterType 传入的内容拼接在sql中且不进行jdbc类型转换， 
+				${}可以接收简单类型值或pojo属性值，
+				如果parameterType传输单个简单类型值，${}括号中只能是value。
+			 -->
+			<!-- and s.shop_name like concat('%',#{shopCondition.shopName},'%')-->
+			and s.shop_name like '%${shopCondition.shopName}%'
+		</if>
+		<!-- 区域Id  -->
+		<if test="shopCondition.area != null and shopCondition.area.areaId != null ">
+			and s.area_id = #{shopCondition.area.areaId}
+		</if>
+		<!-- 商铺状态  -->
+		<if test="shopCondition.enableStatus !=null">
+			and s.enable_status = #{shopCondition.enableStatus}
+		</if>
+		<!-- 商铺类别  -->
+		<if test="shopCondition.shopCategory != null and shopCondition.shopCategory.shopCategoryId != null ">
+			and s.shop_category_id = #{shopCondition.shopCategory.shopCategoryId}
+		</if>
+		<!-- owner  -->
+		<if test="shopCondition.owner != null and shopCondition.owner.userId != null">
+			and s.owner_id = #{shopCondition.owner.userId}
+		</if> 	
+	</sql>
+
+	<insert id="insertShop" useGeneratedKeys="true" keyColumn="shop_id"
+		keyProperty="shopId">
+		insert into
+		tb_shop(area_id,shop_category_id,owner_id,shop_name,shop_desc,shop_addr,phone,
+		shop_img,priority,create_time,enable_status,last_edit_time,advice)
+		value(#{area.areaId},#{shopCategory.shopCategoryId},#{owner.userId},#{shopName},#{shopDesc},
+		#{shopAddr},#{phone},#{shopImg},#{priority},#{createTime},#{enableStatus},#{lastEditTime},#{advice})
+	</insert>
+
+	<update id="updateShop" parameterType="com.tyron.o2o.entity.Shop">
+		update tb_shop
+		<!-- 注意后面的逗号 -->
+		<set>
+			<if test="shopName != null">shop_name = #{shopName},</if>
+			<if test="shopDesc != null">shop_desc = #{shopDesc},</if>
+			<if test="shopAddr != null">shop_addr = #{shopAddr},</if>
+			<if test="phone != null">phone = #{phone},</if>
+			<if test="shopImg != null">shop_img = #{shopImg},</if>
+			<if test="priority != null">priority = #{priority},</if>
+			<if test="enableStatus != null">enable_status = #{enableStatus},</if>
+			<if test="lastEditTime != null">last_edit_time = #{lastEditTime},</if>
+			<if test="advice != null">advice = #{advice},</if>
+			<!-- 注意如果是引用的复杂对象的写法 -->
+			<if test="shopCategory != null">shop_category_id = #{shopCategory.shopCategoryId},</if>
+			<if test="area != null">area_id = #{area.areaId}</if>
+		</set>
+		where shop_id = #{shopId}
+	</update>
+
+	<!-- 不希望获取PersonInfo的信息，所以SQL中没有关联tb_person，如果字段存在重名，可用as取别名解决 -->
+	<select id="queryByShopId" parameterType="long" resultMap="shopMap">
+		SELECT
+		s.shop_id,
+		s.shop_name,
+		s.shop_desc,
+		s.shop_addr,
+		s.phone,
+		s.shop_img,
+		s.priority,
+		s.create_time,
+		s.last_edit_time,
+		s.enable_status,
+		s.advice,
+		a.area_id,
+		a.area_name,
+		sc.shop_category_id,
+		sc.shop_category_name
+		FROM
+		tb_shop s,
+		tb_area a,
+		tb_shop_category sc
+		WHERE
+		s.area_id = a.area_id
+		AND s.shop_category_id = sc.shop_category_id
+		AND
+		s.shop_id
+		= #{shopId}
+	</select>
+
+	<!-- MyBatis 会根据查询结果返回多条resultMap -->
+	<select id="queryShopList" resultMap="shopMap">
+		SELECT
+		s.shop_id,
+		s.shop_name,
+		s.shop_desc,
+		s.shop_addr,
+		s.phone,
+		s.shop_img,
+		s.priority,
+		s.create_time,
+		s.last_edit_time,
+		s.enable_status,
+		s.advice,
+		a.area_id,
+		a.area_name,
+		sc.shop_category_id,
+		sc.shop_category_name
+		FROM
+		tb_shop s,
+		tb_area a,
+		tb_shop_category sc
+		<where>
+			<include refid="selectShopByCondition"/>
+		</where>
+		AND	s.area_id = a.area_id
+		AND s.shop_category_id = sc.shop_category_id 
+		ORDER BY s.priority DESC
+		LIMIT #{rowIndex} , #{pageSize}
+	</select>
+	
+	<select id="queryShopCount" resultType="Integer">
+		SELECT count(1)
+		FROM
+		tb_shop s,
+		tb_area a,
+		tb_shop_category sc
+		<where>
+			<include refid="selectShopByCondition"/>
+		</where>
+		AND	s.area_id = a.area_id
+		AND s.shop_category_id = sc.shop_category_id
+	</select>
+</mapper>

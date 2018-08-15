@@ -1,0 +1,80 @@
+<web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee
+                      http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
+	version="3.1" metadata-complete="true">
+	<display-name>Archetype Created Web Application</display-name>
+
+	<servlet>
+		<!-- 生成图片的Servlet -->
+		<servlet-name>Kaptcha</servlet-name>
+		<servlet-class>com.google.code.kaptcha.servlet.KaptchaServlet</servlet-class>
+
+		<!-- 是否有边框 -->
+		<init-param>
+			<param-name>kaptcha.border</param-name>
+			<param-value>no</param-value>
+		</init-param>
+		<!-- 字体颜色 -->
+		<init-param>
+			<param-name>kaptcha.textproducer.font.color</param-name>
+			<param-value>red</param-value>
+		</init-param>
+		<!-- 图片宽度 -->
+		<init-param>
+			<param-name>kaptcha.image.width</param-name>
+			<param-value>135</param-value>
+		</init-param>
+		<!-- 使用哪些字符生成验证码 -->
+		<init-param>
+			<param-name>kaptcha.textproducer.char.string</param-name>
+			<param-value>ACDEFHKPRSTRWX345679</param-value>
+		</init-param>
+		<!-- 图片高度 -->
+		<init-param>
+			<param-name>kaptcha.image.height</param-name>
+			<param-value>50</param-value>
+		</init-param>
+		<!-- 字体大小 -->
+		<init-param>
+			<param-name>kaptcha.textproducer.font.size</param-name>
+			<param-value>43</param-value>
+		</init-param>
+		<!-- 干扰线的颜色 -->
+		<init-param>
+			<param-name>kaptcha.noise.color</param-name>
+			<param-value>black</param-value>
+		</init-param>
+		<!-- 字符个数 -->
+		<init-param>
+			<param-name>kaptcha.textproducer.char.length</param-name>
+			<param-value>4</param-value>
+		</init-param>
+		<!-- 使用哪些字体 -->
+		<init-param>
+			<param-name>kaptcha.textproducer.font.names</param-name>
+			<param-value>Arial</param-value>
+		</init-param>
+	</servlet>
+	<!-- 映射的url -->
+	<servlet-mapping>
+		<servlet-name>Kaptcha</servlet-name>
+		<url-pattern>/Kaptcha</url-pattern>
+	</servlet-mapping>
+
+	<!-- 配置DispatcherServlet -->
+	<servlet>
+		<servlet-name>spring-dispatcher</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<!-- 配置springMVC需要加载的配置文件 spring-dao.xml,spring-service.xml,spring-web.xml 
+			Mybatis - > spring -> springmvc -->
+		<init-param>
+			<param-name>contextConfigLocation</param-name>
+			<param-value>classpath:spring/spring-*.xml</param-value>
+		</init-param>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>spring-dispatcher</servlet-name>
+		<!-- 默认匹配所有的请求 -->
+		<url-pattern>/</url-pattern>
+	</servlet-mapping>
+</web-app>
