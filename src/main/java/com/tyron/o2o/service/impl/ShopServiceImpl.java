@@ -1,6 +1,8 @@
 package com.tyron.o2o.service.impl;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,6 +17,7 @@ import com.tyron.o2o.enums.ShopStateEnum;
 import com.tyron.o2o.exceptions.ShopOperationException;
 import com.tyron.o2o.service.ShopService;
 import com.tyron.o2o.util.ImageUtil;
+import com.tyron.o2o.util.PageCalculator;
 import com.tyron.o2o.util.PathUtil;
 
 /**
@@ -28,6 +31,26 @@ public class ShopServiceImpl implements ShopService {
 
 	@Autowired
 	private ShopDao shopDao;
+
+	@Override
+	public ShopExecution getShopList(Shop shopCondition, int pageIndex, int pageSize) throws ShopOperationException {
+		// 前台页面插入的pageIndex（第几页）， 而dao层是使用 rowIndex （第几行） ，所以需要转换一下
+		int rowIndex = PageCalculator.calculateRowIndex(pageIndex, pageSize);
+		List<Shop> shopList = new ArrayList<Shop>();
+		ShopExecution se = new ShopExecution();
+		// 查询带有分页的shopList
+		shopList = shopDao.queryShopList(shopCondition, rowIndex, pageSize);
+		// 查询符合条件的shop总数
+		int count = shopDao.queryShopCount(shopCondition);
+		// 将shopList和 count设置到se中，返回给控制层
+		if (shopList != null) {
+			se.setShopList(shopList);
+			se.setCount(count);
+		} else {
+			se.setState(ShopStateEnum.INNER_ERROR.getState());
+		}
+		return se;
+	}
 
 	/*
 	 * (non-Javadoc)

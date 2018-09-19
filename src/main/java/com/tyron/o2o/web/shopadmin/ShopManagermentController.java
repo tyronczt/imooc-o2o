@@ -22,6 +22,7 @@ import org.springframework.web.multipart.MultipartResolver;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.thoughtworks.xstream.mapper.Mapper.Null;
 import com.tyron.o2o.dto.ShopExecution;
 import com.tyron.o2o.entity.Area;
 import com.tyron.o2o.entity.PersonInfo;
@@ -127,7 +128,7 @@ public class ShopManagermentController {
 			ShopExecution se = shopService.addShop(shop, shopImg);
 			if (se.getState() == ShopStateEnum.CHECK.getState()) {
 				modelMap.put("success", true);
-				
+
 				// 注册成功，将店铺列表存入到session中
 				@SuppressWarnings("unchecked")
 				List<Shop> shopList = (List<Shop>) request.getSession().getAttribute("shopList");
@@ -136,7 +137,7 @@ public class ShopManagermentController {
 				}
 				shopList.add(shop);
 				request.getSession().setAttribute("shopList", shopList);
-				
+
 			} else {
 				modelMap.put("success", false);
 				modelMap.put("errMsg", se.getStateInfo());
@@ -233,6 +234,66 @@ public class ShopManagermentController {
 			modelMap.put("errMsg", "请输入店铺id");
 			return modelMap;
 		}
+	}
+
+	/**
+	 * 获取店铺管理信息
+	 * 
+	 * @param request
+	 * @return
+	 */
+	public Map<String, Object> getShopManagementInfo(HttpServletRequest request) {
+		Map<String, Object> modelMap = new HashMap<>();
+		long shopId = HttpServletRequestUtil.getLong(request, "shopId");
+		// 如果shopId不存在
+		if (shopId <= 0) {
+			// 从session中获取店铺信息
+			Object currentShopObj = request.getSession().getAttribute("currentShop");
+			if (currentShopObj == null) {
+				// 如果session中没有店铺信息，重定向回店铺列表页面
+				modelMap.put("redirect", true);
+				modelMap.put("url", "/o2o/shop/getshoplist");
+			} else {
+				Shop currentShop = (Shop) currentShopObj;
+				modelMap.put("redirect", false);
+				modelMap.put("shopId", currentShop.getShopId());
+			}
+		} else {
+			Shop currentShop = new Shop();
+			currentShop.setShopId(shopId);
+			request.getSession().setAttribute("currentShop", currentShop);
+			modelMap.put("redirect", false);
+		}
+		return modelMap;
+	}
+
+	/**
+	 * 获取店铺列表
+	 * 
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value = "/getshoplist", method = RequestMethod.GET)
+	@ResponseBody
+	public Map<String, Object> getShopList(HttpServletRequest request) {
+		Map<String, Object> modelMap = new HashMap<>();
+		PersonInfo user = new PersonInfo();
+		user.setUserId(1L);
+		user.setName("张三");
+		request.getSession().setAttribute("user", user);
+		user = (PersonInfo) request.getSession().getAttribute("user");
+		try {
+			Shop shopCondition = new Shop();
+			shopCondition.setOwner(user);
+			ShopExecution shopExecution = shopService.getShopList(shopCondition, 1, 100);
+			modelMap.put("list", shopExecution.getShopList());
+			modelMap.put("user", user);
+			modelMap.put("success", true);
+		} catch (Exception e) {
+			modelMap.put("success", false);
+			modelMap.put("errMsg", e.getMessage());
+		}
+		return modelMap;
 	}
 
 	/**

@@ -34,7 +34,7 @@ public interface ShopDao {
 	 * @param shopCondition
 	 * @return
 	 */
-	int selectShopCount(@Param("shopCondition") Shop shopCondition);
+	int queryShopCount(@Param("shopCondition") Shop shopCondition);
 
 	/**
 	 * 新增店铺

@@ -31,6 +31,25 @@ public class ShopServiceTest extends BaseTest {
 	private ShopService shopService;
 
 	@Test
+	public void testGetShopList() {
+
+		Shop shopCondition = new Shop();
+		PersonInfo personInfo = new PersonInfo();
+		personInfo.setUserId(1L);
+
+		shopCondition.setOwner(personInfo);
+		shopCondition.setShopName("奶茶");
+
+		ShopExecution se = shopService.getShopList(shopCondition, 1, 2);
+		System.out.println("查询得到店铺数：" + se.getShopList().size());
+		System.out.println("店铺总数：" + se.getCount());
+		se = shopService.getShopList(shopCondition, 2, 2);
+		System.out.println("查询得到店铺数：" + se.getShopList().size());
+		System.out.println("店铺总数：" + se.getCount());
+	}
+
+	@Test
+	@Ignore
 	public void testModifyShop() throws IOException {
 		Shop shop = new Shop();
 		shop.setShopId(1L);

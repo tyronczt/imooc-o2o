@@ -1,6 +1,7 @@
 package com.tyron.o2o.dao;
 
 import java.util.Date;
+import java.util.List;
 
 import org.junit.Ignore;
 import org.junit.Test;
@@ -22,6 +23,18 @@ public class ShopDaoTest extends BaseTest {
 
 	@Autowired
 	private ShopDao shopDao;
+
+	@Test
+	public void testQueryShopList() {
+		Shop shopCondition = new Shop();
+		PersonInfo owner = new PersonInfo();
+		owner.setUserId(1L);
+		shopCondition.setOwner(owner);
+		List<Shop> shopList = shopDao.queryShopList(shopCondition, 0, 3);
+		System.out.println("查询店铺列表的大小：" + shopList.size());
+		int shopCount = shopDao.queryShopCount(shopCondition);
+		System.out.println("店铺列表总数大小：" + shopCount);
+	}
 
 	@Test
 	@Ignore

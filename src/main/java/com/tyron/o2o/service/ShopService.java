@@ -39,4 +39,15 @@ public interface ShopService {
 	 * @return
 	 */
 	ShopExecution modifyShop(Shop shop, MultipartFile shopImg) throws ShopOperationException;
+
+	/**
+	 * 
+	 * @param shopCondition
+	 * @param pageIndex：前端页面:第几页
+	 *            定义为pageIndex
+	 * @param pageSize：展示的行数
+	 * @throws ShopOperationException
+	 * 
+	 */
+	ShopExecution getShopList(Shop shopCondition, int pageIndex, int pageSize) throws ShopOperationException;
 }
