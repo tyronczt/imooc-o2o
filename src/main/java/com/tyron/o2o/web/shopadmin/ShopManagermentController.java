@@ -1,6 +1,6 @@
 package com.tyron.o2o.web.shopadmin;
 
-import java.io.File;
+import java.io.File;	
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -22,7 +22,6 @@ import org.springframework.web.multipart.MultipartResolver;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.thoughtworks.xstream.mapper.Mapper.Null;
 import com.tyron.o2o.dto.ShopExecution;
 import com.tyron.o2o.entity.Area;
 import com.tyron.o2o.entity.PersonInfo;
@@ -242,6 +241,8 @@ public class ShopManagermentController {
 	 * @param request
 	 * @return
 	 */
+	@RequestMapping(value = "/getshopmanageInfo", method = RequestMethod.GET)
+	@ResponseBody
 	public Map<String, Object> getShopManagementInfo(HttpServletRequest request) {
 		Map<String, Object> modelMap = new HashMap<>();
 		long shopId = HttpServletRequestUtil.getLong(request, "shopId");
@@ -286,7 +287,7 @@ public class ShopManagermentController {
 			Shop shopCondition = new Shop();
 			shopCondition.setOwner(user);
 			ShopExecution shopExecution = shopService.getShopList(shopCondition, 1, 100);
-			modelMap.put("list", shopExecution.getShopList());
+			modelMap.put("shopList", shopExecution.getShopList());
 			modelMap.put("user", user);
 			modelMap.put("success", true);
 		} catch (Exception e) {

@@ -20,7 +20,7 @@ public class PathUtil {
 		String basePath = "";
 		// 如果是window操作系统
 		if (os.toLowerCase().startsWith("win")) {
-			basePath = "E:/tyron/image"; // Windows系统
+			basePath = "D:/eclipse/tyron/image"; // Windows系统
 		} else {
 			basePath = "/home/tyron/image"; // 除了Windows系统
 		}

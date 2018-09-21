@@ -31,6 +31,7 @@ public class ShopServiceTest extends BaseTest {
 	private ShopService shopService;
 
 	@Test
+	@Ignore
 	public void testGetShopList() {
 
 		Shop shopCondition = new Shop();
@@ -60,7 +61,6 @@ public class ShopServiceTest extends BaseTest {
 	}
 
 	@Test
-	@Ignore
 	public void testAddShop() throws IOException {
 		Shop shop = new Shop();
 		PersonInfo owner = new PersonInfo();
@@ -80,7 +80,7 @@ public class ShopServiceTest extends BaseTest {
 		shop.setPriority(1);
 		shop.setCreateTime(new Date());
 		shop.setAdvice("审核中");
-		String filePath = "F:\\luffy.jpg";
+		String filePath = "D:\\soft\\luffy.jpg";
 		ShopExecution se = shopService.addShop(shop, path2MultipartFile(filePath));
 		System.out.println("ShopExecution.state" + se.getState());
 		System.out.println("ShopExecution.stateInfo" + se.getStateInfo());
