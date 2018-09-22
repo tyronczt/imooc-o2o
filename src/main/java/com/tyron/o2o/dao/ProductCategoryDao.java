@@ -5,6 +5,8 @@ package com.tyron.o2o.dao;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
+
 import com.tyron.o2o.entity.ProductCategory;
 
 /**
@@ -30,4 +32,13 @@ public interface ProductCategoryDao {
 	 * @return
 	 */
 	int batchInsertProductCategory(List<ProductCategory> productCategoryList);
+
+	/**
+	 * 删除商品类别
+	 * 
+	 * @param productCategoryId 商品类别Id
+	 * @param shopId            店铺Id,使删除操作更安全
+	 * @return
+	 */
+	int deleteProductCategory(@Param("productCategoryId") long productCategoryId, @Param("shopId") long shopId);
 }
