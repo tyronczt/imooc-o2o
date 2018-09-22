@@ -22,4 +22,12 @@ public interface ProductCategoryDao {
 	 * @return
 	 */
 	List<ProductCategory> queryProductCategoryList(long shopId);
+
+	/**
+	 * 批量添加商品类别
+	 * 
+	 * @param productCategoryList 商品类别列表
+	 * @return
+	 */
+	int batchInsertProductCategory(List<ProductCategory> productCategoryList);
 }
