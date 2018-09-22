@@ -15,7 +15,7 @@ $(function(){
                 shopId = data.shopId;
             }
             $('#shopInfo').attr('href','/o2o/shopadmin/shopoperation?shopId=' + shopId);
-            $('#productCategory').attr('href','/o2o/shopadmin/productcategorymanage?shopId=' + shopId);
+            $('#productCategory').attr('href','/o2o/shopadmin/productcategorymanagement');
         }
     });
 
