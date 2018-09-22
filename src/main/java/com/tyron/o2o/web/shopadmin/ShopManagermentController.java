@@ -1,6 +1,6 @@
 package com.tyron.o2o.web.shopadmin;
 
-import java.io.File;	
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -114,14 +114,15 @@ public class ShopManagermentController {
 		if (multipartResolver.isMultipart(request)) {
 			multipartRequest = (MultipartHttpServletRequest) request;
 			shopImg = (MultipartFile) multipartRequest.getFile("shopImg");
-		} else {
+		}
+		if (shopImg == null) {
 			modelMap.put("success", false);
 			modelMap.put("errMsg", "上传图片不能为空");
 			return modelMap;
 		}
 
 		// 2、注册店铺，尽量不要依靠前端信息
-		if (shop != null && shopImg != null) {
+		if (shop != null) {
 			PersonInfo owner = (PersonInfo) request.getSession().getAttribute("user");
 			shop.setOwner(owner);
 			ShopExecution se = shopService.addShop(shop, shopImg);
