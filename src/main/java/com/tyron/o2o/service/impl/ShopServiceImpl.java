@@ -105,6 +105,7 @@ public class ShopServiceImpl implements ShopService {
 	}
 
 	@Override
+	@Transactional
 	public ShopExecution modifyShop(Shop shop, MultipartFile shopImg) {
 		// 判断店铺是否存在
 		if (shop == null || shop.getShopId() == null) {
