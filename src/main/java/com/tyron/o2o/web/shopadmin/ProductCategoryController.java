@@ -116,4 +116,46 @@ public class ProductCategoryController {
 		return modelMap;
 	}
 
+	/**
+	 * 删除商品目录
+	 * 
+	 * @param productCategoryId
+	 * @param request
+	 */
+	@RequestMapping(value = "/removeproductcategory", method = RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> removeProductCategory(Long productCategoryId, HttpServletRequest request) {
+		Map<String, Object> modelMap = new HashMap<String, Object>();
+		if (productCategoryId != null && productCategoryId > 0) {
+			// 从session中获取shop的信息
+			Shop currentShop = (Shop) request.getSession().getAttribute("currentShop");
+			if (currentShop != null && currentShop.getShopId() != null) {
+				try {
+					// 删除
+					Long shopId = currentShop.getShopId();
+					ProductCategoryExecution pce = productCategoryService.deleteProductCategory(productCategoryId,
+							shopId);
+					if (pce.getState() == ProductCategoryStateEnum.SUCCESS.getState()) {
+						modelMap.put("success", true);
+					} else {
+						modelMap.put("success", false);
+						modelMap.put("errMsg", pce.getStateInfo());
+					}
+				} catch (ProductCategoryOperationException e) {
+					e.printStackTrace();
+					modelMap.put("success", false);
+					modelMap.put("errMsg", e.getMessage());
+					return modelMap;
+				}
+			} else {
+				modelMap.put("success", false);
+				modelMap.put("errMsg", ProductCategoryStateEnum.NULL_SHOP.getStateInfo());
+			}
+		} else {
+			modelMap.put("success", false);
+			modelMap.put("errMsg", "请选择商品类别");
+		}
+		return modelMap;
+	}
+
 }
