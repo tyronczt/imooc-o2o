@@ -35,6 +35,7 @@ public class ProductCategoryDaoTest extends BaseTest {
 	}
 
 	@Test
+	@Ignore
 	public void testBatchInsertProductCategory() {
 		ProductCategory pc1 = new ProductCategory();
 		pc1.setCreateTime(new Date());
@@ -51,6 +52,19 @@ public class ProductCategoryDaoTest extends BaseTest {
 		pcList.add(pc2);
 		int effectNum = productCategoryDao.batchInsertProductCategory(pcList);
 		System.out.println(effectNum);
+	}
+
+	@Test
+	public void testDeleteProductCategory() throws Exception {
+		long shopId = 1L;
+		List<ProductCategory> productCategories = productCategoryDao.queryProductCategoryList(shopId);
+		for (ProductCategory productCategory : productCategories) {
+			if ("嘿嘿".equals(productCategory.getProductCategoryName())) {
+				int effectedNum = productCategoryDao.deleteProductCategory(productCategory.getProductCategoryId(),
+						shopId);
+				System.out.println("被删除的数量" + effectedNum);
+			}
+		}
 	}
 
 }
