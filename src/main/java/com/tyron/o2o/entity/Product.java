@@ -14,17 +14,17 @@ public class Product {
 	private String productName;
 	private String productDesc;
 	private String imgAddr;// 简略图
-	private String normalPrice;
-	private String promotionPrice;
+	private String normalPrice;// 原价
+	private String promotionPrice;// 折后价
 	private Integer priority;
 	private Date createTime;
 	private Date lastEditTime;
-	private Integer enableStatus;
+	private Integer enableStatus;// 0、下架，1、在前端展示系统展示
 	private Integer point;
 
-	private List<ProductImg> productImgList;
-	private ProductCategory productCategory;
-	private Shop shop;
+	private List<ProductImg> productImgList;// 产品对应的详情列表,一对多
+	private ProductCategory productCategory;// 产品所属产品目录
+	private Shop shop;// 产品所属店铺
 
 	public Long getProductId() {
 		return productId;
