@@ -2,6 +2,7 @@ package com.tyron.o2o.dao;
 
 import java.util.Date;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -22,6 +23,7 @@ public class ProductTest extends BaseTest {
 	private ProductDao productDao;
 
 	@Test
+	@Ignore
 	public void testInsertProduct() {
 		Shop shop = new Shop();
 		shop.setShopId(1L);
@@ -39,6 +41,29 @@ public class ProductTest extends BaseTest {
 		product.setProductCategory(productCategory);
 		product.setShop(shop);
 		int effectNum = productDao.insertProduct(product);
+		System.out.println("effectNum:" + effectNum);
+	}
+
+	@Test
+	@Ignore
+	public void testQueryProductByProductId() throws Exception {
+		Long productId = 1L;
+		Product product = productDao.queryProductByProductId(productId);
+		System.out.println("productImgSize：" + product.getProductImgList().size());
+	}
+
+	@Test
+	public void testUpdateProduct() throws Exception {
+		Product product = new Product();
+		product.setProductId(1L);
+		ProductCategory productCategory = new ProductCategory();
+		productCategory.setProductCategoryId(1L);
+		Shop shop = new Shop();
+		shop.setShopId(1L);
+		product.setShop(shop);
+		product.setProductCategory(productCategory);
+		product.setProductName("测试修改商品");
+		int effectNum = productDao.updateProduct(product);
 		System.out.println("effectNum:" + effectNum);
 	}
 

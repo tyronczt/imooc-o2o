@@ -1,27 +1,19 @@
 package com.tyron.o2o.service;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.commons.io.IOUtils;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.tyron.o2o.BaseTest;
 import com.tyron.o2o.dto.ProductExecution;
-import com.tyron.o2o.dto.ShopExecution;
-import com.tyron.o2o.entity.Area;
-import com.tyron.o2o.entity.PersonInfo;
 import com.tyron.o2o.entity.Product;
 import com.tyron.o2o.entity.ProductCategory;
 import com.tyron.o2o.entity.Shop;
-import com.tyron.o2o.entity.ShopCategory;
 import com.tyron.o2o.enums.ProductStateEnum;
 import com.tyron.o2o.util.ImageUtil;
 
