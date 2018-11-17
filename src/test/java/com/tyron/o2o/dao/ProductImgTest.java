@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -40,6 +41,15 @@ public class ProductImgTest extends BaseTest {
 		productImgs.add(productImg1);
 		productImgs.add(productImg2);
 		int effectNum = productImgDao.batchInsertProductImg(productImgs);
+		System.out.println("effectNum:" + effectNum);
+	}
+
+	@Test
+	@Ignore
+	public void testDeleteProductImgByProductId() throws Exception {
+		// 删除商品详情记录
+		Long productId = 1L;
+		int effectNum = productImgDao.deleteProductImgByProductId(productId);
 		System.out.println("effectNum:" + effectNum);
 	}
 
