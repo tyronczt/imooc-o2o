@@ -3,8 +3,44 @@
     PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.tyron.o2o.dao.ProductDao">
-	<insert id="insertProduct"
-		parameterType="com.tyron.o2o.entity.Product" useGeneratedKeys="true"
+	<resultMap id="productMap" type="com.tyron.o2o.entity.Product">
+		<id column="product_id" property="productId" />
+		<!-- property对应实体类中的属性名 column 对应库表中的字段名 -->
+		<result column="product_name" property="productName" />
+		<result column="product_desc" property="productDesc" />
+		<result column="img_addr" property="imgAddr" />
+		<result column="normal_price" property="normalPrice" />
+		<result column="promotion_price" property="promotionPrice" />
+		<result column="priority" property="priority" />
+		<result column="create_time" property="createTime" />
+		<result column="last_edit_time" property="lastEditTime" />
+		<result column="enable_status" property="enableStatus" />
+
+		<!-- 一对一使用association product中的属性为productCategory， 通过数据库中的product_category_id关联起来的 
+			类型为 com.tyron.o2o.entity.ProductCategory -->
+		<association property="productCategory" column="product_category_id" javaType="com.tyron.o2o.entity.ProductCategory">
+			<id column="product_category_id" property="productCategoryId" />
+			<result column="product_category_name" property="productCategoryName" />
+		</association>
+
+		<!-- 一对一使用association product中的属性为shop， 通过数据库中的shop_id关联起来的 类型为com.tyron.o2o.entity.Shop -->
+		<association property="shop" column="shop_id" javaType="com.tyron.o2o.entity.Shop">
+			<id column="shop_id" property="shopId" />
+			<result column="owner_id" property="ownerId" />
+			<result column="shop_name" property="shopName" />
+		</association>
+		<!-- 一对多使用collection product中的属性为productImgList，并且是通过库表中的product_id关联起来的，保存的类型为com.imooc.myo2o.entity.ProductImg -->
+		<collection property="productImgList" column="product_id" ofType="com.tyron.o2o.entity.ProductImg">
+			<id column="product_img_id" property="productImgId" />
+			<result column="img_addr" property="imgAddr" />
+			<result column="img_desc" property="imgDesc" />
+			<result column="priority" property="priority" />
+			<result column="create_time" property="createTime" />
+			<result column="product_id" property="productId" />
+		</collection>
+	</resultMap>
+
+	<insert id="insertProduct" parameterType="com.tyron.o2o.entity.Product" useGeneratedKeys="true"
 		keyProperty="productId" keyColumn="product_id">
 		INSERT INTO
 		tb_product(product_category_id,shop_id,product_name,product_desc,
@@ -13,4 +49,59 @@
 		(#{productCategory.productCategoryId},#{shop.shopId},#{productName},#{productDesc},#{imgAddr},
 		#{normalPrice},#{promotionPrice},#{priority},#{createTime},#{enableStatus},#{lastEditTime})
 	</insert>
+	
+	<select id="queryProductByProductId" resultMap="productMap" parameterType="Long">
+		SELECT
+			p.product_id,
+			p.product_name,
+			p.product_desc,
+			p.img_addr,
+			p.normal_price,
+			p.promotion_price,
+			p.priority,
+			p.create_time,
+			p.last_edit_time,
+			p.enable_status,
+			p.product_category_id,
+			p.shop_id,
+			pm.product_img_id,
+			pm.img_addr,
+			pm.img_desc,
+			pm.priority,
+			pm.create_time
+		FROM
+			tb_product p
+		 <!-- 左连接LEFT JOIN，（即使该商品没有商品详情图片，也查询出来该商铺） -->
+		LEFT JOIN
+			tb_product_img pm
+		ON
+			p.product_id =pm.product_id
+		WHERE
+			p.product_id = #{productId}
+		ORDER BY
+			pm.priority DESC
+	</select>
+	
+	<update id="updateProduct" parameterType="com.tyron.o2o.entity.Product">
+		UPDATE
+			tb_product
+		<set>
+		<!-- 注意后面的逗号 -->
+			<if test="productName !=null ">product_name = #{productName},</if>
+			<if test="productDesc !=null ">product_desc = #{productDesc},</if>
+			<if test="imgAddr !=null ">img_addr = #{imgAddr},</if>
+			<if test="normalPrice != null ">normal_price = #{normalPrice},</if>
+			<if test="promotionPrice != null ">promotion_price = #{promotionPrice},</if>
+			<if test="priority != null">priority = #{priority},</if>
+			<if test="createTime != null">create_time = #{createTime},</if>
+			<if test="lastEditTime != null">last_edit_time = #{lastEditTime},</if>
+			<if test="enableStatus != null ">enable_status = #{enableStatus},</if>
+			<!-- 注意如果是引用的复杂对象的写法 -->
+			<if test="productCategory != null and productCategory.productCategoryId != null ">product_category_id = #{productCategory.productCategoryId}</if>
+		</set>
+		WHERE
+		 	product_id = #{productId}
+		 AND 
+			shop_id=#{shop.shopId}
+	</update>
 </mapper>
