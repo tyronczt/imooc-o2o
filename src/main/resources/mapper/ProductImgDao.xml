@@ -4,8 +4,7 @@
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.tyron.o2o.dao.ProductImgDao">
 	<insert id="batchInsertProductImg"
-		parameterType="com.tyron.o2o.entity.ProductImg"
-		useGeneratedKeys="true" keyProperty="productImgId"
+		parameterType="com.tyron.o2o.entity.ProductImg" useGeneratedKeys="true" keyProperty="productImgId"
 		keyColumn="product_img_id">
 		INSERT INTO tb_product_img (
 		img_addr,
@@ -14,8 +13,7 @@
 		priority,
 		create_time
 		) VALUES
-		<foreach collection="list" item="productImg" index="index"
-			separator=",">
+		<foreach collection="list" item="productImg" index="index" separator=",">
 			(
 			#{productImg.imgAddr},
 			#{productImg.imgDesc},
@@ -25,4 +23,27 @@
 			)
 		</foreach>
 	</insert>
+		
+	<delete id="deleteProductImgByProductId">
+		DELETE FROM 
+			tb_product_img 
+		WHERE 
+			product_id = #{produtId}
+	</delete>
+	
+	<select id="selectProductImgList" resultType="com.tyron.o2o.entity.ProductImg">
+		SELECT 
+			product_img_id,
+			img_addr,
+			img_desc,
+			priority,
+			create_time,
+			product_id
+		FROM 
+			tb_product_img
+		WHERE 
+			product_id=#{productId}
+		ORDER BY  
+			product_img_id
+	</select>
 </mapper>
