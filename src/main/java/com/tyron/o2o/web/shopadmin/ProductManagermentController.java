@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.multipart.MultipartResolver;
@@ -37,7 +38,7 @@ import com.tyron.o2o.util.HttpServletRequestUtil;
  */
 
 @Controller
-@RequestMapping("/shopamdmin")
+@RequestMapping("/shopadmin")
 public class ProductManagermentController {
 
 	@Autowired
@@ -63,7 +64,8 @@ public class ProductManagermentController {
 	 * @param request
 	 * @return
 	 */
-	@RequestMapping(value = "addproduct", method = RequestMethod.POST)
+	@RequestMapping(value = "/addproduct", method = RequestMethod.POST)
+	@ResponseBody
 	public Map<String, Object> addProduct(HttpServletRequest request) {
 		Map<String, Object> modelMap = new HashMap<>();
 		// Step1:校验验证码
