@@ -14,7 +14,7 @@ import com.tyron.o2o.entity.ShopCategory;
  * @author tyronchen
  * @date 2018年5月27日
  */
-public class ShopCategoryTest extends BaseTest {
+public class ShopCategoryDaoTest extends BaseTest {
 
 	@Autowired
 	private ShopCategoryDao shopCategoryDao;
