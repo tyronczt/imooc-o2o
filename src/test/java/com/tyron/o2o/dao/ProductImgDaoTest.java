@@ -17,7 +17,7 @@ import com.tyron.o2o.entity.ProductImg;
  * @author: tyron
  * @date: 2018年10月27日
  */
-public class ProductImgTest extends BaseTest {
+public class ProductImgDaoTest extends BaseTest {
 
 	@Autowired
 	private ProductImgDao productImgDao;
