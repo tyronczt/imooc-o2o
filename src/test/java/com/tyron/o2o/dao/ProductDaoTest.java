@@ -17,7 +17,7 @@ import com.tyron.o2o.entity.Shop;
  * @author: tyron
  * @date: 2018年10月27日
  */
-public class ProductTest extends BaseTest {
+public class ProductDaoTest extends BaseTest {
 
 	@Autowired
 	private ProductDao productDao;
