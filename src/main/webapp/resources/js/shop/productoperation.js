@@ -7,7 +7,7 @@ $(function() {
 	// 标识符 productId非空则为true即编辑，否则为添加商品
 	var isEdit = productId ? true : false;
 	// 根据productId获取商品信息Url
-	var infoUrl = '/o2o/shopadmin/getproductbyId?productId=' + productId;
+	var infoUrl = '/o2o/shopadmin/getproductbyid?productId=' + productId;
 	// 获取当前店铺设定的商品类别列表Url
 	var categoryUrl = '/o2o/shopadmin/getproductcategorylist';
 	// 商品提交Url，通过标识符来判断是添加还是编辑操作
@@ -47,8 +47,40 @@ $(function() {
 				$.toast(data.errMsg);
 			}
 		});
-	}
-	;
+	};
+	
+	 /**
+	 * 编辑页面,根据id获取商品信息
+	 */
+    function getProductInfoById(productId){
+        $.getJSON(infoUrl,
+	        function(data) {
+	            if (data.success) {
+	            	// 返回的json信息进行页面赋值
+	                var product = data.product;
+	                $('#product-name').val(product.productName);
+	                $('#product-desc').val(product.productDesc);
+	                $('#priority').val(product.priority);
+	                $('#normal-price').val(product.normalPrice);
+	                $('#promotion-price').val(product.promotionPrice);
+	                // 设置商品类别列表及选中的商品类别
+	                var optionHtml = '';
+	                var optionArr = data.productCategoryList;
+	                var optionSelected = product.productCategory.productCategoryId;
+	                optionArr.map(function(item, index) {
+                            var isSelect = optionSelected === item.productCategoryId ? 'selected' : '';
+                            optionHtml += '<option data-value="'
+                                    + item.productCategoryId
+                                    + '"'
+                                    + isSelect
+                                    + '>'
+                                    + item.productCategoryName
+                                    + '</option>';
+	                        });
+	                $('#product-category').html(optionHtml);
+	            }
+	        });
+    };
 
 	/**
 	 * 点击控件的最后一个且图片数量小于6个的时候，生成一个选择框
