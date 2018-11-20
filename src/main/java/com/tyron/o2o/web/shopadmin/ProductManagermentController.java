@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
@@ -23,9 +24,11 @@ import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tyron.o2o.dto.ProductExecution;
 import com.tyron.o2o.entity.Product;
+import com.tyron.o2o.entity.ProductCategory;
 import com.tyron.o2o.entity.Shop;
 import com.tyron.o2o.enums.ProductStateEnum;
 import com.tyron.o2o.exceptions.ProductOperationException;
+import com.tyron.o2o.service.ProductCategoryService;
 import com.tyron.o2o.service.ProductService;
 import com.tyron.o2o.util.CodeUtil;
 import com.tyron.o2o.util.HttpServletRequestUtil;
@@ -44,8 +47,38 @@ public class ProductManagermentController {
 	@Autowired
 	private ProductService productService;
 
+	@Autowired
+	private ProductCategoryService productCategoryService;
+
 	// 支持上传商品详情图的最大数量
 	private static final int IMAGE_MAX_COUNT = 6;
+
+	/**
+	 * 通过商品Id获取商品信息
+	 * 
+	 * @param productId
+	 * @return
+	 */
+	@RequestMapping(value = "/getproductbyid", method = RequestMethod.GET)
+	@ResponseBody
+	public Map<String, Object> getProductById(@RequestParam Long productId) {
+		Map<String, Object> modelMap = new HashMap<>();
+		// 非空判断
+		if (productId != null && productId > 0) {
+			// 获取商品信息
+			Product product = productService.getProductById(productId);
+			// 获取该店铺下商品类别列表
+			List<ProductCategory> productCategoryList = productCategoryService
+					.getProductCategoryList(product.getShop().getShopId());
+			modelMap.put("product", product);
+			modelMap.put("productCategoryList", productCategoryList);
+			modelMap.put("success", true);
+		} else {
+			modelMap.put("success", false);
+			modelMap.put("errMsg", "商品ID为空");
+		}
+		return modelMap;
+	}
 
 	/**
 	 * 添加商品
@@ -90,7 +123,6 @@ public class ProductManagermentController {
 		}
 
 		// Step3: 商品缩略图 和 商品详情图 构造调用service层的第二个参数和第三个参数
-		MultipartHttpServletRequest multipartRequest = null;
 		MultipartFile productImg = null; // 图片缩略图
 		List<MultipartFile> productDetailImgList = new ArrayList<>();// 商品详情图
 		try {
@@ -99,20 +131,7 @@ public class ProductManagermentController {
 					request.getSession().getServletContext());
 			// 判断 request 是否有文件上传,即多部分请求
 			if (multipartResolver.isMultipart(request)) {
-				// 与前端约定使用productImg，得到商品缩略图
-				multipartRequest = (MultipartHttpServletRequest) request;
-				productImg = (MultipartFile) multipartRequest.getFile("productImg");
-
-				// 得到商品详情的列表，和前端约定使用productDetailImg + i 传递
-				for (int i = 0; i < IMAGE_MAX_COUNT; i++) {
-					MultipartFile productDetailImg = (MultipartFile) multipartRequest.getFile("productDetailImg" + i);
-					if (productDetailImg != null) {
-						productDetailImgList.add(productDetailImg);
-					} else {
-						// 如果从请求中获取的到file为空，终止循环
-						break;
-					}
-				}
+				productImg = handleImage(request, productDetailImgList);
 			} else {
 				modelMap.put("success", false);
 				modelMap.put("errMsg", "上传图片不能为空");
@@ -150,4 +169,110 @@ public class ProductManagermentController {
 		return modelMap;
 	}
 
+	/**
+	 * 修改店铺信息
+	 * 
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value = "/modifyproduct", method = RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> modifyProduct(HttpServletRequest request) {
+		Map<String, Object> modelMap = new HashMap<>();
+		// Step1:检验验证码，在点击商品下架时不需要输入验证码，编辑时需要输入验证码
+		boolean statusChange = HttpServletRequestUtil.getBoolean(request, "statusChange");
+		// 状态改变且验证码错误时，返回
+		if (!statusChange && !CodeUtil.checkVerifyCode(request)) {
+			modelMap.put("success", false);
+			modelMap.put("errMsg", "验证码有误，请重新输入");
+			return modelMap;
+		}
+
+		// Step2：参数第一个参数：商品信息
+		String productStr = null;
+		Product product = null;
+		// 使用jackson-databind-->https://github.com/FasterXML/jackson-databind将json转换为pojo
+		ObjectMapper mapper = new ObjectMapper(); // create once, reuse（创建一次，可重用）
+		try {
+			productStr = HttpServletRequestUtil.getString(request, "productStr");
+			product = mapper.readValue(productStr, Product.class);
+		} catch (Exception e) {
+			modelMap.put("success", false);
+			modelMap.put("errMsg", e.getMessage());
+			return modelMap;
+		}
+
+		// Step3: 商品缩略图 和 商品详情图 构造调用service层的第二个参数和第三个参数
+		MultipartFile productImg = null; // 图片缩略图
+		List<MultipartFile> productDetailImgList = new ArrayList<>();// 商品详情图
+		try {
+			// 创建一个通用的多部分解析器
+			MultipartResolver multipartResolver = new CommonsMultipartResolver(
+					request.getSession().getServletContext());
+			// 判断 request 是否有文件上传,即多部分请求
+			if (multipartResolver.isMultipart(request)) {
+				productImg = handleImage(request, productDetailImgList);
+			} else {
+				modelMap.put("success", false);
+				modelMap.put("errMsg", "上传图片不能为空");
+				return modelMap;
+			}
+		} catch (Exception e) {
+			modelMap.put("success", false);
+			modelMap.put("errMsg", e.getMessage());
+			return modelMap;
+		}
+
+		// Step4：调用service层店铺修改方法
+		if (product != null) {
+			try {
+				// 从session中获取shop信息，不依赖前端的传递更加安全
+				Shop currentShop = (Shop) request.getSession().getAttribute("currentShop");
+				product.setShop(currentShop);
+				// 调用modifyProduct
+				ProductExecution pe = productService.modifyProduct(product, productImg, productDetailImgList);
+				if (pe.getState() == ProductStateEnum.SUCCESS.getState()) {
+					modelMap.put("success", true);
+				} else {
+					modelMap.put("success", false);
+					modelMap.put("errMsg", pe.getStateInfo());
+				}
+			} catch (ProductOperationException e) {
+				modelMap.put("success", false);
+				modelMap.put("errMsg", e.toString());
+				return modelMap;
+			}
+		} else {
+			modelMap.put("success", false);
+			modelMap.put("errMsg", "请输入商品信息");
+		}
+		return modelMap;
+	}
+
+	/**
+	 * 处理图片私有方法
+	 * 
+	 * @param request
+	 * @param productDetailImgList
+	 * @return
+	 */
+	private MultipartFile handleImage(HttpServletRequest request, List<MultipartFile> productDetailImgList) {
+		MultipartHttpServletRequest multipartRequest;
+		MultipartFile productImg;
+		// 与前端约定使用productImg，得到商品缩略图
+		multipartRequest = (MultipartHttpServletRequest) request;
+		productImg = (MultipartFile) multipartRequest.getFile("productImg");
+
+		// 得到商品详情的列表，和前端约定使用productDetailImg + i 传递
+		for (int i = 0; i < IMAGE_MAX_COUNT; i++) {
+			MultipartFile productDetailImg = (MultipartFile) multipartRequest.getFile("productDetailImg" + i);
+			if (productDetailImg != null) {
+				productDetailImgList.add(productDetailImg);
+			} else {
+				// 如果从请求中获取的到file为空，终止循环
+				break;
+			}
+		}
+		return productImg;
+	}
 }
