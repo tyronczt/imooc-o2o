@@ -1,6 +1,7 @@
 package com.tyron.o2o.dao;
 
 import java.util.Date;
+import java.util.List;
 
 import org.junit.Ignore;
 import org.junit.Test;
@@ -53,6 +54,7 @@ public class ProductDaoTest extends BaseTest {
 	}
 
 	@Test
+	@Ignore
 	public void testUpdateProduct() throws Exception {
 		Product product = new Product();
 		product.setProductId(1L);
@@ -65,6 +67,26 @@ public class ProductDaoTest extends BaseTest {
 		product.setProductName("测试修改商品");
 		int effectNum = productDao.updateProduct(product);
 		System.out.println("effectNum:" + effectNum);
+	}
+
+	@Test
+	public void testQueryProductList() throws Exception {
+		Product productCondition = new Product();
+		// 分页查询
+		List<Product> list = productDao.queryProductList(productCondition, 0, 5);
+		System.out.println("list.size:" + list.size());
+		// 查询总数
+		int productCount = productDao.queryProductCount(productCondition);
+		System.out.println("productCount:" + productCount);
+
+		// 使用条件查询
+		productCondition.setProductName("秋");
+		// 条件分页查询
+		List<Product> conditionList = productDao.queryProductList(productCondition, 0, 5);
+		System.out.println("conditionList.size:" + conditionList.size());
+		// 条件查询总数
+		int conditionProductCount = productDao.queryProductCount(productCondition);
+		System.out.println("conditionProductCount:" + conditionProductCount);
 	}
 
 }
