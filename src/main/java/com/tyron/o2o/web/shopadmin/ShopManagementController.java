@@ -42,7 +42,7 @@ import com.tyron.o2o.util.HttpServletRequestUtil;
  */
 @Controller
 @RequestMapping("/shop")
-public class ShopManagermentController {
+public class ShopManagementController {
 
 	@Autowired
 	private ShopService shopService;
