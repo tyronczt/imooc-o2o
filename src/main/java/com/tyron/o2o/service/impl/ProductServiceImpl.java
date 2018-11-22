@@ -18,6 +18,7 @@ import com.tyron.o2o.enums.ProductStateEnum;
 import com.tyron.o2o.exceptions.ProductOperationException;
 import com.tyron.o2o.service.ProductService;
 import com.tyron.o2o.util.ImageUtil;
+import com.tyron.o2o.util.PageCalculator;
 import com.tyron.o2o.util.PathUtil;
 
 /**
@@ -131,7 +132,17 @@ public class ProductServiceImpl implements ProductService {
 
 	@Override
 	public ProductExecution getProductList(Product productCondition, int pageIndex, int pageSize) {
-		return null;
+		// 将页码转换为数据库的行数
+		int rowIndex = PageCalculator.calculateRowIndex(pageIndex, pageSize);
+		// 获取商品列表分页信息
+		List<Product> productList = productDao.queryProductList(productCondition, rowIndex, pageSize);
+		// 获取商品总数
+		int productCount = productDao.queryProductCount(productCondition);
+		// 构建返回对象,并设值
+		ProductExecution productExecution = new ProductExecution();
+		productExecution.setCount(productCount);
+		productExecution.setProductList(productList);
+		return productExecution;
 	}
 
 	@Override
