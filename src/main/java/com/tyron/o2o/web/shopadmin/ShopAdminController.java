@@ -63,4 +63,14 @@ public class ShopAdminController {
 	public String productOperation() {
 		return "shop/productoperation";
 	}
+
+	/**
+	 * 商品管理页面
+	 * 
+	 * @return
+	 */
+	@RequestMapping(value = "/productmanagement", method = RequestMethod.GET)
+	public String productManagement() {
+		return "shop/productmanagement";
+	}
 }
