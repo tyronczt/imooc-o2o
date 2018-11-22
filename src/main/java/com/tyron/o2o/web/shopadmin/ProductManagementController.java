@@ -42,7 +42,7 @@ import com.tyron.o2o.util.HttpServletRequestUtil;
 
 @Controller
 @RequestMapping("/shopadmin")
-public class ProductManagermentController {
+public class ProductManagementController {
 
 	@Autowired
 	private ProductService productService;
@@ -78,6 +78,65 @@ public class ProductManagermentController {
 			modelMap.put("errMsg", "商品ID为空");
 		}
 		return modelMap;
+	}
+
+	/**
+	 * 通过店铺id获取该店铺下的商品列表
+	 * 
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value = "/getproductlistbyshop", method = RequestMethod.GET)
+	@ResponseBody
+	public Map<String, Object> getProductListByShop(HttpServletRequest request) {
+		Map<String, Object> modelMap = new HashMap<>();
+		// 获取页码和每页数量
+		int pageIndex = HttpServletRequestUtil.getInt(request, "pageIndex");
+		int pageSize = HttpServletRequestUtil.getInt(request, "pageSize");
+		// 获取当前session中的店铺信息
+		Shop currentShop = (Shop) request.getSession().getAttribute("currentShop");
+		// 空值判断
+		if (pageIndex > -1 && pageSize > -1 && currentShop != null && currentShop.getShopId() != null) {
+			// 设值查询条件
+			long productCategoryId = HttpServletRequestUtil.getLong(request, "productCategoryId");
+			String productName = HttpServletRequestUtil.getString(request, "productName");
+			Product productCondition = compactProductCondition(currentShop.getShopId(), productCategoryId, productName);
+			// 查询商品列表和总数
+			ProductExecution productExecution = productService.getProductList(productCondition, pageIndex, pageSize);
+			modelMap.put("productList", productExecution.getProductList());
+			modelMap.put("count", productExecution.getCount());
+			modelMap.put("success", true);
+		} else {
+			modelMap.put("success", false);
+			modelMap.put("errMsg", "缺少分页参数");
+		}
+		return modelMap;
+	}
+
+	/**
+	 * 商品查询条件
+	 * 
+	 * @param shopId
+	 * @param productCategoryId
+	 * @param productName
+	 * @return
+	 */
+	private Product compactProductCondition(long shopId, long productCategoryId, String productName) {
+		Product productCondition = new Product();
+		Shop shop = new Shop();
+		shop.setShopId(shopId);
+		productCondition.setShop(shop);
+		// 查询类别
+		if (productCategoryId != -1) {
+			ProductCategory productCategory = new ProductCategory();
+			productCategory.setProductCategoryId(productCategoryId);
+			productCondition.setProductCategory(productCategory);
+		}
+		// 查询商品名
+		if (productName != null) {
+			productCondition.setProductName(productName);
+		}
+		return productCondition;
 	}
 
 	/**
@@ -212,10 +271,6 @@ public class ProductManagermentController {
 			// 判断 request 是否有文件上传,即多部分请求
 			if (multipartResolver.isMultipart(request)) {
 				productImg = handleImage(request, productDetailImgList);
-			} else {
-				modelMap.put("success", false);
-				modelMap.put("errMsg", "上传图片不能为空");
-				return modelMap;
 			}
 		} catch (Exception e) {
 			modelMap.put("success", false);
