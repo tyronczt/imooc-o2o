@@ -19,8 +19,8 @@ public interface ProductDao {
 	 * 查询商品列表并分页，输入条件：商品名（模糊），商品状态，店铺Id，商品类别
 	 * 
 	 * @param productCondition 查询条件
-	 * @param rowIndex        行数
-	 * @param pageSize        每页数
+	 * @param rowIndex         行数
+	 * @param pageSize         每页数
 	 * @return
 	 */
 	List<Product> queryProductList(@Param("productCondition") Product productCondition, @Param("rowIndex") int rowIndex,
@@ -57,5 +57,13 @@ public interface ProductDao {
 	 * @return
 	 */
 	int updateProduct(Product product);
+
+	/**
+	 * 删除商品类别时将商品记录中的类别项置空
+	 * 
+	 * @param productCategoryId
+	 * @return
+	 */
+	int updateProductCategoryToNull(long productCategoryId);
 
 }

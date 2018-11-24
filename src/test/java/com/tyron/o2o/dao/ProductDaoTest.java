@@ -70,6 +70,7 @@ public class ProductDaoTest extends BaseTest {
 	}
 
 	@Test
+	@Ignore
 	public void testQueryProductList() throws Exception {
 		Product productCondition = new Product();
 		// 分页查询
@@ -87,6 +88,12 @@ public class ProductDaoTest extends BaseTest {
 		// 条件查询总数
 		int conditionProductCount = productDao.queryProductCount(productCondition);
 		System.out.println("conditionProductCount:" + conditionProductCount);
+	}
+
+	@Test
+	public void testUpdateProductCategoryToNull() throws Exception {
+		int effectNum = productDao.updateProductCategoryToNull(15L);
+		System.out.println("effectNum:" + effectNum);
 	}
 
 }
