@@ -5,7 +5,7 @@ $(function() {
 
 	function getshoplist() {
 		$.ajax({
-			url : "/o2o/shop/getshoplist",
+			url : "/o2o/shopadmin/getshoplist",
 			type : "get",
 			dataType : "json",
 			success : function(data) {

@@ -41,14 +41,14 @@ import com.tyron.o2o.util.HttpServletRequestUtil;
  * @date 2018年4月15日
  */
 @Controller
-@RequestMapping("/shop")
+@RequestMapping("/shopadmin")
 public class ShopManagementController {
 
 	@Autowired
 	private ShopService shopService;
 
 	@Autowired
-	private ShopCategoryService ShopCategoryService;
+	private ShopCategoryService shopCategoryService;
 
 	@Autowired
 	private AreaService areaService;
@@ -65,7 +65,7 @@ public class ShopManagementController {
 		List<Area> areaList = new ArrayList<>();
 		List<ShopCategory> shopCategoryList = new ArrayList<>();
 		try {
-			shopCategoryList = ShopCategoryService.getShopCategoryList(new ShopCategory());
+			shopCategoryList = shopCategoryService.getShopCategoryList(new ShopCategory());
 			areaList = areaService.getAreaList();
 			modelMap.put("shopCategoryList", shopCategoryList);
 			modelMap.put("areaList", areaList);
@@ -254,7 +254,7 @@ public class ShopManagementController {
 			if (currentShopObj == null) {
 				// 如果session中没有店铺信息，重定向回店铺列表页面
 				modelMap.put("redirect", true);
-				modelMap.put("url", "/o2o/shop/getshoplist");
+				modelMap.put("url", "/o2o/shopadmin/getshoplist");
 			} else {
 				Shop currentShop = (Shop) currentShopObj;
 				modelMap.put("redirect", false);

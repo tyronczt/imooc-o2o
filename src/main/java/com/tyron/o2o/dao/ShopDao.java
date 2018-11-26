@@ -25,7 +25,7 @@ public interface ShopDao {
 	 *            比如 rowIndex为1,pageSize为5 即为 从第一行开始取，取5行数据
 	 * @return
 	 */
-	List<Shop> queryShopList(@Param("shopCondition") Shop shopCondition, @Param("rowIndex") int rowIndex,
+	List<Shop> selectShopList(@Param("shopCondition") Shop shopCondition, @Param("rowIndex") int rowIndex,
 			@Param("pageSize") int pageSize);
 
 	/**
@@ -34,7 +34,7 @@ public interface ShopDao {
 	 * @param shopCondition
 	 * @return
 	 */
-	int queryShopCount(@Param("shopCondition") Shop shopCondition);
+	int selectShopCount(@Param("shopCondition") Shop shopCondition);
 
 	/**
 	 * 新增店铺
@@ -58,5 +58,5 @@ public interface ShopDao {
 	 * @param shopId
 	 * @return
 	 */
-	Shop queryByShopId(long shopId);
+	Shop selectByShopId(long shopId);
 }

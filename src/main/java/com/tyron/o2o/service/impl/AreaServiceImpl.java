@@ -28,7 +28,7 @@ public class AreaServiceImpl implements AreaService {
 	 */
 	@Override
 	public List<Area> getAreaList() {
-		List<Area> areaList = areaDao.queryArea();
+		List<Area> areaList = areaDao.selectArea();
 		return areaList;
 	}
 

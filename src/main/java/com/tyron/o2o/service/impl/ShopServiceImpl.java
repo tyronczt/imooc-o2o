@@ -39,9 +39,9 @@ public class ShopServiceImpl implements ShopService {
 		List<Shop> shopList = new ArrayList<Shop>();
 		ShopExecution se = new ShopExecution();
 		// 查询带有分页的shopList
-		shopList = shopDao.queryShopList(shopCondition, rowIndex, pageSize);
+		shopList = shopDao.selectShopList(shopCondition, rowIndex, pageSize);
 		// 查询符合条件的shop总数
-		int count = shopDao.queryShopCount(shopCondition);
+		int count = shopDao.selectShopCount(shopCondition);
 		// 将shopList和 count设置到se中，返回给控制层
 		if (shopList != null) {
 			se.setShopList(shopList);
@@ -101,7 +101,7 @@ public class ShopServiceImpl implements ShopService {
 
 	@Override
 	public Shop getByShopId(long shopId) {
-		return shopDao.queryByShopId(shopId);
+		return shopDao.selectByShopId(shopId);
 	}
 
 	@Override
@@ -114,7 +114,7 @@ public class ShopServiceImpl implements ShopService {
 			try {
 				// 判断是否要处理照片
 				if (shopImg != null) {
-					Shop tempShop = shopDao.queryByShopId(shop.getShopId());
+					Shop tempShop = shopDao.selectByShopId(shop.getShopId());
 					if (tempShop.getShopImg() != null) {
 						// 删除原先图片
 						ImageUtil.deleteFileOrPath(tempShop.getShopImg());
@@ -127,7 +127,7 @@ public class ShopServiceImpl implements ShopService {
 				int effectNum = shopDao.updateShop(shop);
 				// 更新成功
 				if (effectNum > 0) {
-					shop = shopDao.queryByShopId(shop.getShopId());
+					shop = shopDao.selectByShopId(shop.getShopId());
 					return new ShopExecution(ShopStateEnum.SUCCESS, shop);
 				} else {
 					return new ShopExecution(ShopStateEnum.INNER_ERROR);

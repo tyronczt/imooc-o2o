@@ -12,6 +12,7 @@ import com.tyron.o2o.entity.Area;
 import com.tyron.o2o.entity.PersonInfo;
 import com.tyron.o2o.entity.Shop;
 import com.tyron.o2o.entity.ShopCategory;
+import com.tyron.o2o.util.SystemEnumUtil;
 
 /**
  * @Description: 测试店铺接口
@@ -30,9 +31,9 @@ public class ShopDaoTest extends BaseTest {
 		PersonInfo owner = new PersonInfo();
 		owner.setUserId(1L);
 		shopCondition.setOwner(owner);
-		List<Shop> shopList = shopDao.queryShopList(shopCondition, 0, 3);
+		List<Shop> shopList = shopDao.selectShopList(shopCondition, 0, 3);
 		System.out.println("查询店铺列表的大小：" + shopList.size());
-		int shopCount = shopDao.queryShopCount(shopCondition);
+		int shopCount = shopDao.selectShopCount(shopCondition);
 		System.out.println("店铺列表总数大小：" + shopCount);
 	}
 
@@ -56,7 +57,7 @@ public class ShopDaoTest extends BaseTest {
 		shop.setPhone("test");
 		shop.setPriority(1);
 		shop.setCreateTime(new Date());
-		shop.setEnableStatus(1);
+		shop.setEnableStatus(SystemEnumUtil.ENABLE_STATUS.USABLE.getValue());
 		shop.setAdvice("审核中");
 		int effectNum = shopDao.insertShop(shop);
 		System.out.println("effectNum：" + effectNum);
@@ -80,7 +81,7 @@ public class ShopDaoTest extends BaseTest {
 	@Test
 	@Ignore
 	public void testQueryShop() {
-		Shop shop = shopDao.queryByShopId(1);
+		Shop shop = shopDao.selectByShopId(1);
 		System.out.println("areaName:" + shop.getArea().getAreaName());
 		System.out.println("shopCategoryName:" + shop.getShopCategory().getShopCategoryName());
 	}

@@ -36,5 +36,5 @@ public interface ProductImgDao {
 	 * @param productId
 	 * @return
 	 */
-	List<ProductImg> queryProductImgListByProductId(long productId);
+	List<ProductImg> selectProductImgListByProductId(long productId);
 }

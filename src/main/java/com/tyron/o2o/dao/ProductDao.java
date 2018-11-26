@@ -23,7 +23,7 @@ public interface ProductDao {
 	 * @param pageSize         每页数
 	 * @return
 	 */
-	List<Product> queryProductList(@Param("productCondition") Product productCondition, @Param("rowIndex") int rowIndex,
+	List<Product> selectProductList(@Param("productCondition") Product productCondition, @Param("rowIndex") int rowIndex,
 			@Param("pageSize") int pageSize);
 
 	/**
@@ -32,7 +32,7 @@ public interface ProductDao {
 	 * @param productCondition 查询条件
 	 * @return
 	 */
-	int queryProductCount(@Param("productCondition") Product productCondition);
+	int selectProductCount(@Param("productCondition") Product productCondition);
 
 	/**
 	 * 插入商品
@@ -48,7 +48,7 @@ public interface ProductDao {
 	 * @param productId
 	 * @return
 	 */
-	Product queryProductByProductId(long productId);
+	Product selectProductByProductId(long productId);
 
 	/**
 	 * 更新商品信息

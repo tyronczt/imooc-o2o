@@ -15,8 +15,8 @@ import com.tyron.o2o.dto.ProductExecution;
 import com.tyron.o2o.entity.Product;
 import com.tyron.o2o.entity.ProductCategory;
 import com.tyron.o2o.entity.Shop;
-import com.tyron.o2o.enums.ProductStateEnum;
 import com.tyron.o2o.util.ImageUtil;
+import com.tyron.o2o.util.SystemEnumUtil;
 
 /**
  * 
@@ -43,7 +43,7 @@ public class ProductServiceTest extends BaseTest {
 		product.setProductName("测试商品1");
 		product.setProductDesc("测试商品1描述");
 		product.setPriority(11);
-		product.setEnableStatus(ProductStateEnum.SUCCESS.getState());
+		product.setEnableStatus(SystemEnumUtil.ENABLE_STATUS.USABLE.getValue());
 		product.setLastEditTime(new Date());
 		product.setCreateTime(new Date());
 		String filePath0 = "D:\\eclipse\\pic\\IMG_2837.JPG";
@@ -73,7 +73,7 @@ public class ProductServiceTest extends BaseTest {
 		product.setProductName("测试商品2");
 		product.setProductDesc("测试商品2描述");
 		product.setPriority(22);
-		product.setEnableStatus(ProductStateEnum.SUCCESS.getState());
+		product.setEnableStatus(SystemEnumUtil.ENABLE_STATUS.USABLE.getValue());
 		product.setLastEditTime(new Date());
 		product.setCreateTime(new Date());
 		String filePath0 = "D:\\eclipse\\pic\\1.JPG";

@@ -3,7 +3,7 @@ $(function(){
     // 获取shopId
     var shopId = getQueryString("shopId");
     // 商铺管理的url
-    var shopInfoUrl = '/o2o/shop/getshopmanageInfo?shopId=' + shopId;
+    var shopInfoUrl = '/o2o/shopadmin/getshopmanageInfo?shopId=' + shopId;
 
     $.getJSON(shopInfoUrl,function (data) {
         // 如果后台返回redirect=true,则跳转后台到设置的url

@@ -11,6 +11,7 @@ import com.tyron.o2o.BaseTest;
 import com.tyron.o2o.entity.Product;
 import com.tyron.o2o.entity.ProductCategory;
 import com.tyron.o2o.entity.Shop;
+import com.tyron.o2o.util.SystemEnumUtil;
 
 /**
  * @Description: 商品测试
@@ -32,7 +33,7 @@ public class ProductDaoTest extends BaseTest {
 		productCategory.setProductCategoryId(1L);
 		Product product = new Product();
 		product.setCreateTime(new Date());
-		product.setEnableStatus(1);
+		product.setEnableStatus(SystemEnumUtil.ENABLE_STATUS.USABLE.getValue());
 		product.setProductName("1");
 		product.setProductDesc("11");
 		product.setImgAddr("111");
@@ -49,7 +50,7 @@ public class ProductDaoTest extends BaseTest {
 	@Ignore
 	public void testQueryProductByProductId() throws Exception {
 		Long productId = 1L;
-		Product product = productDao.queryProductByProductId(productId);
+		Product product = productDao.selectProductByProductId(productId);
 		System.out.println("productImgSize：" + product.getProductImgList().size());
 	}
 
@@ -74,19 +75,19 @@ public class ProductDaoTest extends BaseTest {
 	public void testQueryProductList() throws Exception {
 		Product productCondition = new Product();
 		// 分页查询
-		List<Product> list = productDao.queryProductList(productCondition, 0, 5);
+		List<Product> list = productDao.selectProductList(productCondition, 0, 5);
 		System.out.println("list.size:" + list.size());
 		// 查询总数
-		int productCount = productDao.queryProductCount(productCondition);
+		int productCount = productDao.selectProductCount(productCondition);
 		System.out.println("productCount:" + productCount);
 
 		// 使用条件查询
 		productCondition.setProductName("秋");
 		// 条件分页查询
-		List<Product> conditionList = productDao.queryProductList(productCondition, 0, 5);
+		List<Product> conditionList = productDao.selectProductList(productCondition, 0, 5);
 		System.out.println("conditionList.size:" + conditionList.size());
 		// 条件查询总数
-		int conditionProductCount = productDao.queryProductCount(productCondition);
+		int conditionProductCount = productDao.selectProductCount(productCondition);
 		System.out.println("conditionProductCount:" + conditionProductCount);
 	}
 

@@ -20,6 +20,7 @@ import com.tyron.o2o.service.ProductService;
 import com.tyron.o2o.util.ImageUtil;
 import com.tyron.o2o.util.PageCalculator;
 import com.tyron.o2o.util.PathUtil;
+import com.tyron.o2o.util.SystemEnumUtil;
 
 /**
  * @Description: 商品业务接口实现
@@ -57,7 +58,7 @@ public class ProductServiceImpl implements ProductService {
 			product.setCreateTime(new Date());
 			product.setLastEditTime(new Date());
 			// 默认上架状态
-			product.setEnableStatus(1);
+			product.setEnableStatus(SystemEnumUtil.ENABLE_STATUS.USABLE.getValue());
 			// 若商品缩略图不为空则添加
 			if (productImg != null) {
 				addProductImg(product, productImg);
@@ -102,7 +103,7 @@ public class ProductServiceImpl implements ProductService {
 			// 若商品缩略图不为空且原有缩略图不为空，则先删除原有缩略图并添加
 			if (productImg != null) {
 				// 先获取原有信息，得到原有图片地址
-				Product origProduct = productDao.queryProductByProductId(product.getProductId());
+				Product origProduct = productDao.selectProductByProductId(product.getProductId());
 				if (origProduct.getImgAddr() != null) {
 					ImageUtil.deleteFileOrPath(origProduct.getImgAddr());
 				}
@@ -135,9 +136,9 @@ public class ProductServiceImpl implements ProductService {
 		// 将页码转换为数据库的行数
 		int rowIndex = PageCalculator.calculateRowIndex(pageIndex, pageSize);
 		// 获取商品列表分页信息
-		List<Product> productList = productDao.queryProductList(productCondition, rowIndex, pageSize);
+		List<Product> productList = productDao.selectProductList(productCondition, rowIndex, pageSize);
 		// 获取商品总数
-		int productCount = productDao.queryProductCount(productCondition);
+		int productCount = productDao.selectProductCount(productCondition);
 		// 构建返回对象,并设值
 		ProductExecution productExecution = new ProductExecution();
 		productExecution.setCount(productCount);
@@ -147,7 +148,7 @@ public class ProductServiceImpl implements ProductService {
 
 	@Override
 	public Product getProductById(long productId) {
-		return productDao.queryProductByProductId(productId);
+		return productDao.selectProductByProductId(productId);
 	}
 
 	/**
@@ -203,7 +204,7 @@ public class ProductServiceImpl implements ProductService {
 	 */
 	private void deleteProductImgList(long productId) {
 		// 根据productId获取原有的图片
-		List<ProductImg> productImgList = productImgDao.queryProductImgListByProductId(productId);
+		List<ProductImg> productImgList = productImgDao.selectProductImgListByProductId(productId);
 		if (productImgList != null && !productImgList.isEmpty()) {
 			for (ProductImg productImg : productImgList) {
 				// 删除存的图片

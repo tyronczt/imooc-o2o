@@ -110,7 +110,7 @@
 	</update>
 
 	<!-- 不希望获取PersonInfo的信息，所以SQL中没有关联tb_person，如果字段存在重名，可用as取别名解决 -->
-	<select id="queryByShopId" parameterType="long" resultMap="shopMap">
+	<select id="selectByShopId" parameterType="long" resultMap="shopMap">
 		SELECT
 		s.shop_id,
 		s.shop_name,
@@ -140,7 +140,7 @@
 	</select>
 
 	<!-- MyBatis 会根据查询结果返回多条resultMap -->
-	<select id="queryShopList" resultMap="shopMap">
+	<select id="selectShopList" resultMap="shopMap">
 		SELECT
 		s.shop_id,
 		s.shop_name,
@@ -170,7 +170,7 @@
 		LIMIT #{rowIndex} , #{pageSize}
 	</select>
 	
-	<select id="queryShopCount" resultType="Integer">
+	<select id="selectShopCount" resultType="Integer">
 		SELECT count(1)
 		FROM
 		tb_shop s,

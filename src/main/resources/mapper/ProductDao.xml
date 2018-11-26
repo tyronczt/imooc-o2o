@@ -50,7 +50,7 @@
 		#{normalPrice},#{promotionPrice},#{priority},#{createTime},#{enableStatus},#{lastEditTime})
 	</insert>
 	
-	<select id="queryProductByProductId" resultMap="productMap" parameterType="Long">
+	<select id="selectProductByProductId" resultMap="productMap" parameterType="Long">
 		SELECT
 			p.product_id,
 			p.product_name,
@@ -105,7 +105,7 @@
 			shop_id=#{shop.shopId}
 	</update>
 	
-	<select id="queryProductList" resultType="com.tyron.o2o.entity.Product">
+	<select id="selectProductList" resultType="com.tyron.o2o.entity.Product">
 		SELECT
 		product_id,
 		product_name,
@@ -142,7 +142,7 @@
 		LIMIT #{rowIndex},#{pageSize};
 	</select>
 
-	<select id="queryProductCount" resultType="int">
+	<select id="selectProductCount" resultType="int">
 		SELECT count(1) FROM tb_product
 		<where>
 			<if

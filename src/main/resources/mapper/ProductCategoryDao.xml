@@ -4,7 +4,7 @@
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.tyron.o2o.dao.ProductCategoryDao">
 
-	<select id="queryProductCategoryList" resultType="com.tyron.o2o.entity.ProductCategory" parameterType="Long">
+	<select id="selectProductCategoryList" resultType="com.tyron.o2o.entity.ProductCategory" parameterType="Long">
 		select product_category_id, 
 		product_category_name, priority,
 		create_time, shop_id

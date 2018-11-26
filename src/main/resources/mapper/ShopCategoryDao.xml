@@ -4,18 +4,25 @@
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.tyron.o2o.dao.ShopCategoryDao">
 
-	<select id="queryShopCategory" resultType="com.tyron.o2o.entity.ShopCategory">
+	<select id="selectShopCategory"
+		resultType="com.tyron.o2o.entity.ShopCategory">
 		select shop_category_id, shop_category_name,
 		shop_category_desc,
 		shop_category_img, priority,
 		create_time, last_edit_time, parent_id
 		from tb_shop_category
 		<where>
-			<!-- 当店铺类别查询条件不为空的时候，查询子店铺类别列表 -->
+			<!-- 首页查询一级类别的商铺信息 -->
+			<if test="shopCategoryCondition == null">
+				and parent_id is null
+			</if>
+			<!-- 查询二级类别的商铺信息-->
 			<if test="shopCategoryCondition != null">
 				and parent_id is not null
 			</if>
-			<if test="shopCategoryCondition.parent != null">
+			<!-- 如果传递了父类的id,则查询对应父类下的目录 -->
+			<if
+				test="shopCategoryCondition != null and shopCategoryCondition.parent != null">
 				and parent_id = #{shopCategoryCondition.parent.shopCategoryId}
 			</if>
 		</where>

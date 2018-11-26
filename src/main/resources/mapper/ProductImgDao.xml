@@ -31,7 +31,7 @@
 			product_id = #{produtId}
 	</delete>
 	
-	<select id="queryProductImgListByProductId" resultType="com.tyron.o2o.entity.ProductImg">
+	<select id="selectProductImgListByProductId" resultType="com.tyron.o2o.entity.ProductImg">
 		SELECT 
 			product_img_id,
 			img_addr,
