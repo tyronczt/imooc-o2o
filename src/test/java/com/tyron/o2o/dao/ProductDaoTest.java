@@ -11,7 +11,7 @@ import com.tyron.o2o.BaseTest;
 import com.tyron.o2o.entity.Product;
 import com.tyron.o2o.entity.ProductCategory;
 import com.tyron.o2o.entity.Shop;
-import com.tyron.o2o.util.SystemEnumUtil;
+import com.tyron.o2o.enums.EnableStatusEnum;
 
 /**
  * @Description: 商品测试
@@ -33,7 +33,7 @@ public class ProductDaoTest extends BaseTest {
 		productCategory.setProductCategoryId(1L);
 		Product product = new Product();
 		product.setCreateTime(new Date());
-		product.setEnableStatus(SystemEnumUtil.ENABLE_STATUS.USABLE.getValue());
+		product.setEnableStatus(EnableStatusEnum.AVAILABLE.getState());
 		product.setProductName("1");
 		product.setProductDesc("11");
 		product.setImgAddr("111");

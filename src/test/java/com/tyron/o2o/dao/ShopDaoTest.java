@@ -12,7 +12,7 @@ import com.tyron.o2o.entity.Area;
 import com.tyron.o2o.entity.PersonInfo;
 import com.tyron.o2o.entity.Shop;
 import com.tyron.o2o.entity.ShopCategory;
-import com.tyron.o2o.util.SystemEnumUtil;
+import com.tyron.o2o.enums.EnableStatusEnum;
 
 /**
  * @Description: 测试店铺接口
@@ -57,7 +57,7 @@ public class ShopDaoTest extends BaseTest {
 		shop.setPhone("test");
 		shop.setPriority(1);
 		shop.setCreateTime(new Date());
-		shop.setEnableStatus(SystemEnumUtil.ENABLE_STATUS.USABLE.getValue());
+		shop.setEnableStatus(EnableStatusEnum.AVAILABLE.getState());
 		shop.setAdvice("审核中");
 		int effectNum = shopDao.insertShop(shop);
 		System.out.println("effectNum：" + effectNum);

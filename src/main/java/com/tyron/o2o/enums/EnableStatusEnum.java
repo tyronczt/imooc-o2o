@@ -7,9 +7,8 @@ package com.tyron.o2o.enums;
  * @date 2018年4月15日
  */
 public enum EnableStatusEnum {
-	CHECK(0, "审核中"), UNAVAILABLE(-1, "不可用"), AVAILABLE(1, "可用");
+	AVAILABLE(0, "不可用"), UNAVAILABLE(1, "可用"), CHECK(2, "审核中");
 	private int state;
-
 	private String stateInfo;
 
 	private EnableStatusEnum(int state, String stateInfo) {

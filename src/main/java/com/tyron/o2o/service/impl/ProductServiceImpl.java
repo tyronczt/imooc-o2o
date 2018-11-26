@@ -14,13 +14,13 @@ import com.tyron.o2o.dao.ProductImgDao;
 import com.tyron.o2o.dto.ProductExecution;
 import com.tyron.o2o.entity.Product;
 import com.tyron.o2o.entity.ProductImg;
+import com.tyron.o2o.enums.EnableStatusEnum;
 import com.tyron.o2o.enums.ProductStateEnum;
 import com.tyron.o2o.exceptions.ProductOperationException;
 import com.tyron.o2o.service.ProductService;
 import com.tyron.o2o.util.ImageUtil;
 import com.tyron.o2o.util.PageCalculator;
 import com.tyron.o2o.util.PathUtil;
-import com.tyron.o2o.util.SystemEnumUtil;
 
 /**
  * @Description: 商品业务接口实现
@@ -58,7 +58,7 @@ public class ProductServiceImpl implements ProductService {
 			product.setCreateTime(new Date());
 			product.setLastEditTime(new Date());
 			// 默认上架状态
-			product.setEnableStatus(SystemEnumUtil.ENABLE_STATUS.USABLE.getValue());
+			product.setEnableStatus(EnableStatusEnum.AVAILABLE.getState());
 			// 若商品缩略图不为空则添加
 			if (productImg != null) {
 				addProductImg(product, productImg);

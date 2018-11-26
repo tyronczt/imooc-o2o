@@ -13,9 +13,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.tyron.o2o.entity.HeadLine;
 import com.tyron.o2o.entity.ShopCategory;
+import com.tyron.o2o.enums.EnableStatusEnum;
 import com.tyron.o2o.service.HeadLineService;
 import com.tyron.o2o.service.ShopCategoryService;
-import com.tyron.o2o.util.SystemEnumUtil;
 
 /**
  * @Description: 首页控制层
@@ -59,7 +59,7 @@ public class MainPageController {
 		try {
 			// 获取状态可用的头条列表
 			HeadLine headLineCondition = new HeadLine();
-			headLineCondition.setEnableStatus(SystemEnumUtil.ENABLE_STATUS.USABLE.getValue());
+			headLineCondition.setEnableStatus(EnableStatusEnum.AVAILABLE.getState());
 			headLineList = headLineService.getHeadLineList(headLineCondition);
 			modelMap.put("headLineList", headLineList);
 		} catch (Exception e) {

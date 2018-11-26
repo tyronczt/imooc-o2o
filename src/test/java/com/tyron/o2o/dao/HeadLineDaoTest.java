@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.tyron.o2o.BaseTest;
 import com.tyron.o2o.entity.HeadLine;
-import com.tyron.o2o.util.SystemEnumUtil;
+import com.tyron.o2o.enums.EnableStatusEnum;
 
 /**
  * @Description: 首页头条数据接口测试
@@ -30,7 +30,7 @@ public class HeadLineDaoTest extends BaseTest {
 	public void testInsertHeadLine() throws Exception {
 		HeadLine headLine = new HeadLine();
 		headLine.setCreateTime(new Date());
-		headLine.setEnableStatus(SystemEnumUtil.ENABLE_STATUS.USABLE.getValue());
+		headLine.setEnableStatus(EnableStatusEnum.AVAILABLE.getState());
 		headLine.setLineImg("test");
 		headLine.setLineLink("testLink");
 		headLine.setLineName("测试");
@@ -44,7 +44,7 @@ public class HeadLineDaoTest extends BaseTest {
 	public void testUpdateHeadLine() throws Exception {
 		HeadLine headLine = new HeadLine();
 		headLine.setLineId(1L);
-		headLine.setEnableStatus(SystemEnumUtil.ENABLE_STATUS.UNUSABLE.getValue());
+		headLine.setEnableStatus(EnableStatusEnum.UNAVAILABLE.getState());
 		headLine.setLastEditTime(new Date());
 		int effectNum = headLineDao.updateHeadLine(headLine);
 		System.out.println("insertNum:" + effectNum);
