@@ -45,4 +45,12 @@ public class PathUtil {
 		String imagePath = "/upload/item/headLine/";
 		return imagePath.replace("/", separator);
 	}
+
+	/**
+	 * 获取店铺类别路径
+	 */
+	public static String getShopCategoryImagePath() {
+		String imagePath = "/upload/item/shopcategory/";
+		return imagePath.replace("/", separator);
+	}
 }
