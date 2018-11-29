@@ -41,13 +41,13 @@ public interface ShopService {
 	ShopExecution modifyShop(Shop shop, MultipartFile shopImg) throws ShopOperationException;
 
 	/**
+	 * 获取店铺分页列表
 	 * 
-	 * @param shopCondition
-	 * @param pageIndex：前端页面:第几页
-	 *            定义为pageIndex
-	 * @param pageSize：展示的行数
+	 * @param shopCondition 店铺查询条件
+	 * @param pageIndex     第几页
+	 * @param pageSize      每页条数
+	 * @return
 	 * @throws ShopOperationException
-	 * 
 	 */
 	ShopExecution getShopList(Shop shopCondition, int pageIndex, int pageSize) throws ShopOperationException;
 }
