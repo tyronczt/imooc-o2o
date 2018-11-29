@@ -80,8 +80,7 @@
 		</if> 	
 	</sql>
 
-	<insert id="insertShop" useGeneratedKeys="true" keyColumn="shop_id"
-		keyProperty="shopId">
+	<insert id="insertShop" useGeneratedKeys="true" keyColumn="shop_id" keyProperty="shopId">
 		insert into
 		tb_shop(area_id,shop_category_id,owner_id,shop_name,shop_desc,shop_addr,phone,
 		shop_img,priority,create_time,enable_status,last_edit_time,advice)
