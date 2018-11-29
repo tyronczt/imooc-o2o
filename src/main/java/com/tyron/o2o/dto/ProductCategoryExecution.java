@@ -3,6 +3,7 @@ package com.tyron.o2o.dto;
 import java.util.List;
 
 import com.tyron.o2o.entity.ProductCategory;
+import com.tyron.o2o.enums.OperationStatusEnum;
 import com.tyron.o2o.enums.ProductCategoryStateEnum;
 
 /**
@@ -43,10 +44,10 @@ public class ProductCategoryExecution {
 	 * @param productCategoryList
 	 * @param count
 	 */
-	public ProductCategoryExecution(ProductCategoryStateEnum productCategoryStateEnum,
+	public ProductCategoryExecution(OperationStatusEnum operationStatusEnum,
 			List<ProductCategory> productCategoryList, int count) {
-		this.state = productCategoryStateEnum.getState();
-		this.stateInfo = productCategoryStateEnum.getStateInfo();
+		this.state = operationStatusEnum.getState();
+		this.stateInfo = operationStatusEnum.getStateInfo();
 		this.productCategoryList = productCategoryList;
 		this.count = count;
 	}

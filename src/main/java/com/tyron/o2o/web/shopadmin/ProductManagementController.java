@@ -26,6 +26,7 @@ import com.tyron.o2o.dto.ProductExecution;
 import com.tyron.o2o.entity.Product;
 import com.tyron.o2o.entity.ProductCategory;
 import com.tyron.o2o.entity.Shop;
+import com.tyron.o2o.enums.OperationStatusEnum;
 import com.tyron.o2o.enums.ProductStateEnum;
 import com.tyron.o2o.exceptions.ProductOperationException;
 import com.tyron.o2o.service.ProductCategoryService;
@@ -75,7 +76,7 @@ public class ProductManagementController {
 			modelMap.put("success", true);
 		} else {
 			modelMap.put("success", false);
-			modelMap.put("errMsg", "商品ID为空");
+			modelMap.put("errMsg", ProductStateEnum.PRODUCT_ID_EMPTY.getStateInfo());
 		}
 		return modelMap;
 	}
@@ -163,7 +164,7 @@ public class ProductManagementController {
 		// Step1:校验验证码
 		if (!CodeUtil.checkVerifyCode(request)) {
 			modelMap.put("success", false);
-			modelMap.put("errMsg", "验证码输入有误，请重新输入。");
+			modelMap.put("errMsg", "验证码输入有误，请重新输入");
 			return modelMap;
 		}
 
@@ -193,7 +194,7 @@ public class ProductManagementController {
 				productImg = handleImage(request, productDetailImgList);
 			} else {
 				modelMap.put("success", false);
-				modelMap.put("errMsg", "上传图片不能为空");
+				modelMap.put("errMsg", OperationStatusEnum.PIC_EMPTY.getStateInfo());
 				return modelMap;
 			}
 		} catch (Exception e) {
@@ -210,7 +211,7 @@ public class ProductManagementController {
 				product.setShop(currentShop);
 				// 调用addProduct
 				ProductExecution pe = productService.addProduct(product, productImg, productDetailImgList);
-				if (pe.getState() == ProductStateEnum.SUCCESS.getState()) {
+				if (pe.getState() == OperationStatusEnum.SUCCESS.getState()) {
 					modelMap.put("success", true);
 				} else {
 					modelMap.put("success", false);
@@ -223,7 +224,7 @@ public class ProductManagementController {
 			}
 		} else {
 			modelMap.put("success", false);
-			modelMap.put("errMsg", "请输入商品信息");
+			modelMap.put("errMsg", ProductStateEnum.PRODUCT_EMPTY.getStateInfo());
 		}
 		return modelMap;
 	}
@@ -286,7 +287,7 @@ public class ProductManagementController {
 				product.setShop(currentShop);
 				// 调用modifyProduct
 				ProductExecution pe = productService.modifyProduct(product, productImg, productDetailImgList);
-				if (pe.getState() == ProductStateEnum.SUCCESS.getState()) {
+				if (pe.getState() == OperationStatusEnum.SUCCESS.getState()) {
 					modelMap.put("success", true);
 				} else {
 					modelMap.put("success", false);

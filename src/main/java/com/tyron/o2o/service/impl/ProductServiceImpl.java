@@ -15,6 +15,7 @@ import com.tyron.o2o.dto.ProductExecution;
 import com.tyron.o2o.entity.Product;
 import com.tyron.o2o.entity.ProductImg;
 import com.tyron.o2o.enums.EnableStatusEnum;
+import com.tyron.o2o.enums.OperationStatusEnum;
 import com.tyron.o2o.enums.ProductStateEnum;
 import com.tyron.o2o.exceptions.ProductOperationException;
 import com.tyron.o2o.service.ProductService;
@@ -56,7 +57,6 @@ public class ProductServiceImpl implements ProductService {
 		if (product != null && product.getShop() != null && product.getShop().getShopId() != null) {
 			// 给商品设置默认属性
 			product.setCreateTime(new Date());
-			product.setLastEditTime(new Date());
 			// 默认上架状态
 			product.setEnableStatus(EnableStatusEnum.AVAILABLE.getState());
 			// 若商品缩略图不为空则添加
@@ -67,16 +67,16 @@ public class ProductServiceImpl implements ProductService {
 			try {
 				int effectNum = productDao.insertProduct(product);
 				if (effectNum <= 0) {
-					throw new ProductOperationException("创建商品失败");
+					throw new ProductOperationException(ProductStateEnum.EDIT_ERROR.getStateInfo());
 				}
 			} catch (Exception e) {
-				throw new ProductOperationException("创建商品失败" + e.toString());
+				throw new ProductOperationException(ProductStateEnum.EDIT_ERROR.getStateInfo() + e.toString());
 			}
 			// 若商品详情图列表不为空则添加
 			if (productImgList != null && !productImgList.isEmpty()) {
 				addProductImgList(product, productImgList);
 			}
-			return new ProductExecution(ProductStateEnum.SUCCESS, product);
+			return new ProductExecution(OperationStatusEnum.SUCCESS, product);
 		} else {
 			// 参数为空则返回空值错误信息
 			return new ProductExecution(ProductStateEnum.EMPTY);
@@ -120,11 +120,11 @@ public class ProductServiceImpl implements ProductService {
 			try {
 				int effectNum = productDao.updateProduct(product);
 				if (effectNum <= 0) {
-					throw new ProductOperationException("更新商品信息失败");
+					throw new ProductOperationException(ProductStateEnum.EDIT_ERROR.getStateInfo());
 				}
-				return new ProductExecution(ProductStateEnum.SUCCESS, product);
+				return new ProductExecution(OperationStatusEnum.SUCCESS, product);
 			} catch (ProductOperationException e) {
-				throw new ProductOperationException("更新商品信息失败" + e.getMessage());
+				throw new ProductOperationException(ProductStateEnum.EDIT_ERROR.getStateInfo() + e.getMessage());
 			}
 		} else {
 			return new ProductExecution(ProductStateEnum.EMPTY);
@@ -189,10 +189,10 @@ public class ProductServiceImpl implements ProductService {
 			try {
 				int effectNum = productImgDao.batchInsertProductImg(productImgs);
 				if (effectNum <= 0) {
-					throw new ProductOperationException("创建商品详情图片失败");
+					throw new ProductOperationException(OperationStatusEnum.PIC_UPLOAD_ERROR.getStateInfo());
 				}
 			} catch (Exception e) {
-				throw new ProductOperationException("创建商品详情图片失败" + e.toString());
+				throw new ProductOperationException(OperationStatusEnum.PIC_UPLOAD_ERROR.getStateInfo() + e.toString());
 			}
 		}
 	}

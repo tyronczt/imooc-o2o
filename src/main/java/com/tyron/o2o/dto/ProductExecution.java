@@ -3,6 +3,7 @@ package com.tyron.o2o.dto;
 import java.util.List;
 
 import com.tyron.o2o.entity.Product;
+import com.tyron.o2o.enums.OperationStatusEnum;
 import com.tyron.o2o.enums.ProductStateEnum;
 
 /**
@@ -39,14 +40,14 @@ public class ProductExecution {
 	}
 
 	// 商品操作成功的时候使用的构造器
-	public ProductExecution(ProductStateEnum stateEnum, Product Product) {
+	public ProductExecution(OperationStatusEnum stateEnum, Product Product) {
 		this.state = stateEnum.getState();
 		this.stateInfo = stateEnum.getStateInfo();
 		this.Product = Product;
 	}
 
 	// 商品操作成功的时候使用的构造器
-	public ProductExecution(ProductStateEnum stateEnum, List<Product> ProductList) {
+	public ProductExecution(OperationStatusEnum stateEnum, List<Product> ProductList) {
 		this.state = stateEnum.getState();
 		this.stateInfo = stateEnum.getStateInfo();
 		this.ProductList = ProductList;
