@@ -45,4 +45,21 @@
 		</set>
 		where line_id = #{lineId}
 	</update>
+	
+	<select id="selectHeadLineById" resultType="com.tyron.o2o.entity.HeadLine">
+		SELECT
+			line_id,
+			line_name,
+			line_link,
+			line_img,
+			priority,
+			enable_status,
+			create_time,
+			last_edit_time
+		FROM
+			tb_head_line
+		<where>
+			line_id = #{lineId}
+		</where>
+	</select>
 </mapper>
