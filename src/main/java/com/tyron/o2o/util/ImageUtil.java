@@ -57,6 +57,54 @@ public class ImageUtil {
 	}
 
 	/**
+	 * 处理首页头图
+	 * 
+	 * @param thumbnail  Spring自带的文件处理对象
+	 * @param targetAddr 图片存储路径
+	 * @return
+	 */
+	public static String generateHeadImg(MultipartFile thumbnail, String targetAddr) {
+		// 获取随机文件名，防止文件重名
+		String realFileName = getRandomFileName();
+		// 获取文件扩展名
+		String extension = getFileExtension(thumbnail);
+		// 在文件夹不存在时创建
+		makeDirPath(targetAddr);
+		String relativeAddr = targetAddr + realFileName + extension;
+		File dest = new File(PathUtil.getImgBasePath() + relativeAddr);
+		try {
+			Thumbnails.of(thumbnail.getInputStream()).size(400, 300).outputQuality(0.9f).toFile(dest);
+		} catch (IOException e) {
+			throw new RuntimeException("创建缩略图失败：" + e.toString());
+		}
+		return relativeAddr;
+	}
+
+	/**
+	 * 处理商品分类图
+	 * 
+	 * @param thumbnail  Spring自带的文件处理对象
+	 * @param targetAddr 图片存储路径
+	 * @return
+	 */
+	public static String generateShopCategoryImg(MultipartFile thumbnail, String targetAddr) {
+		// 获取随机文件名，防止文件重名
+		String realFileName = getRandomFileName();
+		// 获取文件扩展名
+		String extension = getFileExtension(thumbnail);
+		// 在文件夹不存在时创建
+		makeDirPath(targetAddr);
+		String relativeAddr = targetAddr + realFileName + extension;
+		File dest = new File(PathUtil.getImgBasePath() + relativeAddr);
+		try {
+			Thumbnails.of(thumbnail.getInputStream()).size(50, 50).outputQuality(0.9f).toFile(dest);
+		} catch (IOException e) {
+			throw new RuntimeException("创建缩略图失败：" + e.toString());
+		}
+		return relativeAddr;
+	}
+
+	/**
 	 * 处理商品缩略图
 	 * 
 	 * @param thumbnail  Spring自带的文件处理对象
