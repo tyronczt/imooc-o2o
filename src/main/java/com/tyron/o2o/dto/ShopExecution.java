@@ -3,6 +3,7 @@ package com.tyron.o2o.dto;
 import java.util.List;
 
 import com.tyron.o2o.entity.Shop;
+import com.tyron.o2o.enums.OperationStatusEnum;
 import com.tyron.o2o.enums.ShopStateEnum;
 
 /**
@@ -37,6 +38,13 @@ public class ShopExecution {
 		this.stateInfo = stateEnum.getStateInfo();
 	}
 
+	// 店铺操作成功的时候使用的构造器,基本操作
+	public ShopExecution(OperationStatusEnum stateEnum, Shop shop) {
+		this.state = stateEnum.getState();
+		this.stateInfo = stateEnum.getStateInfo();
+		this.shop = shop;
+	}
+
 	// 店铺操作成功的时候使用的构造器
 	public ShopExecution(ShopStateEnum stateEnum, Shop shop) {
 		this.state = stateEnum.getState();
@@ -45,7 +53,7 @@ public class ShopExecution {
 	}
 
 	// 店铺操作成功的时候使用的构造器
-	public ShopExecution(ShopStateEnum stateEnum, List<Shop> shopList) {
+	public ShopExecution(OperationStatusEnum stateEnum, List<Shop> shopList) {
 		this.state = stateEnum.getState();
 		this.stateInfo = stateEnum.getStateInfo();
 		this.shopList = shopList;
