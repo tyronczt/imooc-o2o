@@ -13,6 +13,7 @@ import com.tyron.o2o.dao.ShopDao;
 import com.tyron.o2o.dto.ShopExecution;
 import com.tyron.o2o.entity.Shop;
 import com.tyron.o2o.enums.EnableStatusEnum;
+import com.tyron.o2o.enums.OperationStatusEnum;
 import com.tyron.o2o.enums.ShopStateEnum;
 import com.tyron.o2o.exceptions.ShopOperationException;
 import com.tyron.o2o.service.ShopService;
@@ -47,7 +48,7 @@ public class ShopServiceImpl implements ShopService {
 			se.setShopList(shopList);
 			se.setCount(count);
 		} else {
-			se.setState(ShopStateEnum.INNER_ERROR.getState());
+			se.setState(ShopStateEnum.EDIT_ERROR.getState());
 		}
 		return se;
 	}
@@ -61,39 +62,38 @@ public class ShopServiceImpl implements ShopService {
 	@Override
 	@Transactional
 	public ShopExecution addShop(Shop shop, MultipartFile shopImg) {
-		// 空置判断
+		// 空值判断
 		if (shop == null) {
 			return new ShopExecution(ShopStateEnum.NULL_SHOP_INFO);
 		} else {
 			try {
 				// 初始化赋值
 				shop.setCreateTime(new Date());
-				shop.setLastEditTime(new Date());
 				shop.setEnableStatus(EnableStatusEnum.CHECK.getState());
 				// 添加店铺信息
 				int effectedNum = shopDao.insertShop(shop);
 				// 添加店铺失败
 				if (effectedNum <= 0) {
-					throw new ShopOperationException("添加店铺失败");
+					throw new ShopOperationException(ShopStateEnum.EDIT_ERROR.getStateInfo());
 				} else {
 					try {
 						// 空值判断
 						if (shopImg == null) {
-							throw new ShopOperationException("图片不存在");
+							throw new ShopOperationException(OperationStatusEnum.PIC_EMPTY.getStateInfo());
 						} else {
 							// 存储图片
 							addImage(shop, shopImg);
 							effectedNum = shopDao.updateShop(shop);
 							if (effectedNum <= 0) {
-								throw new ShopOperationException("创建图片地址失败");
+								throw new ShopOperationException(OperationStatusEnum.PIC_UPLOAD_ERROR.getStateInfo());
 							}
 						}
 					} catch (Exception e) {
-						throw new ShopOperationException("addShopImg error" + e.getMessage());
+						throw new ShopOperationException(ShopStateEnum.EDIT_ERROR.getStateInfo() + e.getMessage());
 					}
 				}
 			} catch (Exception e) {
-				throw new ShopOperationException("addShop error" + e.getMessage());
+				throw new ShopOperationException(ShopStateEnum.EDIT_ERROR.getStateInfo() + e.getMessage());
 			}
 			return new ShopExecution(ShopStateEnum.CHECK, shop);
 		}
@@ -128,12 +128,12 @@ public class ShopServiceImpl implements ShopService {
 				// 更新成功
 				if (effectNum > 0) {
 					shop = shopDao.selectByShopId(shop.getShopId());
-					return new ShopExecution(ShopStateEnum.SUCCESS, shop);
+					return new ShopExecution(OperationStatusEnum.SUCCESS, shop);
 				} else {
-					return new ShopExecution(ShopStateEnum.INNER_ERROR);
+					return new ShopExecution(ShopStateEnum.EDIT_ERROR);
 				}
 			} catch (Exception e) {
-				throw new ShopOperationException("modifyShop error" + e.getMessage());
+				throw new ShopOperationException(ShopStateEnum.EDIT_ERROR.getStateInfo() + e.getMessage());
 			}
 		}
 	}
