@@ -20,6 +20,6 @@ public interface HeadLineService {
 	 * @return
 	 * @throws Exception
 	 */
-	public List<HeadLine> getHeadLineList(HeadLine headLineCondition);
-
+	List<HeadLine> getHeadLineList(HeadLine headLineCondition);
+	
 }
