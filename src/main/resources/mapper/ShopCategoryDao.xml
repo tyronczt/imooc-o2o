@@ -4,8 +4,7 @@
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.tyron.o2o.dao.ShopCategoryDao">
 
-	<select id="selectShopCategory"
-		resultType="com.tyron.o2o.entity.ShopCategory">
+	<select id="selectShopCategory" resultType="com.tyron.o2o.entity.ShopCategory">
 		select shop_category_id, shop_category_name,
 		shop_category_desc,
 		shop_category_img, priority,
@@ -27,6 +26,42 @@
 			</if>
 		</where>
 		order by
-		priority desc
+		priority asc
+	</select>
+
+	<insert id="insertShopCategory" useGeneratedKeys="true" keyColumn="shop_category_id" keyProperty="shopCategoryId">
+		INSERT INTO tb_shop_category
+		(shop_category_name, shop_category_desc, shop_category_img, priority, create_time, last_edit_time, parent_id)
+		VALUES(#{shopCategoryName},#{shopCategoryDesc},#{shopCategoryImg},#{priority},#{createTime},#{lastEditTime},#{parent.shopCategoryId});
+	</insert>
+
+	<update id="updateShopCategory" parameterType="com.tyron.o2o.entity.ShopCategory">
+		update tb_shop_category
+		<!-- 注意后面的逗号 -->
+		<set>
+			<if test="shopCategoryName != null">shop_category_name = #{shopCategoryName},</if>
+			<if test="shopCategoryDesc != null">shop_category_desc = #{shopCategoryDesc},</if>
+			<if test="shopCategorImg != null">shop_category_img = #{shopCategorImg},</if>
+			<if test="priority != null">priority = #{priority},</if>
+			<if test="parentId != null">parent_id = #{parent.shopCategoryId},</if>
+			<if test="lastEditTime != null">last_edit_time = #{lastEditTime}</if>
+		</set>
+		where shop_category_id = #{shopCategoryId}
+	</update>
+	
+	<select id="selectShopCategoryById" resultType="com.tyron.o2o.entity.ShopCategory">
+		SELECT
+			shop_category_name, 
+			shop_category_desc,
+			shop_category_img,
+			priority,
+			create_time,
+			last_edit_time,
+			parent_id
+		FROM
+			tb_shop_category
+		<where>
+			shop_category_id = #{shopCategoryId}
+		</where>
 	</select>
 </mapper>

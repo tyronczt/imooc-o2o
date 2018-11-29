@@ -22,4 +22,28 @@ public interface ShopCategoryDao {
 	 */
 	List<ShopCategory> selectShopCategory(@Param("shopCategoryCondition") ShopCategory shopCategoryCondition);
 
+	/**
+	 * 新增商品分类
+	 * 
+	 * @param shopCategory
+	 * @return
+	 */
+	int insertShopCategory(ShopCategory shopCategory);
+
+	/**
+	 * 修改商品分类
+	 * 
+	 * @param shopCategory
+	 * @return
+	 */
+	int updateShopCategory(ShopCategory shopCategory);
+
+	/**
+	 * 根据Id查询商品分类信息
+	 * 
+	 * @param shopCategory
+	 * @return
+	 */
+	ShopCategory selectShopCategoryById(long shopCategoryId);
+
 }
