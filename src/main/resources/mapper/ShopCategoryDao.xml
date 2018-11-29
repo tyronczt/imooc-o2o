@@ -20,13 +20,13 @@
 				and parent_id is not null
 			</if>
 			<!-- 如果传递了父类的id,则查询对应父类下的目录 -->
-			<if
-				test="shopCategoryCondition != null and shopCategoryCondition.parent != null">
+			<if test="shopCategoryCondition != null and shopCategoryCondition.parent != null">
 				and parent_id = #{shopCategoryCondition.parent.shopCategoryId}
 			</if>
 		</where>
 		order by
 		priority asc
+		LIMIT #{rowIndex}, #{pageSize}
 	</select>
 
 	<insert id="insertShopCategory" useGeneratedKeys="true" keyColumn="shop_category_id" keyProperty="shopCategoryId">
@@ -41,9 +41,9 @@
 		<set>
 			<if test="shopCategoryName != null">shop_category_name = #{shopCategoryName},</if>
 			<if test="shopCategoryDesc != null">shop_category_desc = #{shopCategoryDesc},</if>
-			<if test="shopCategorImg != null">shop_category_img = #{shopCategorImg},</if>
+			<if test="shopCategoryImg != null">shop_category_img = #{shopCategoryImg},</if>
 			<if test="priority != null">priority = #{priority},</if>
-			<if test="parentId != null">parent_id = #{parent.shopCategoryId},</if>
+			<if test="parent != null">parent_id = #{parent.shopCategoryId},</if>
 			<if test="lastEditTime != null">last_edit_time = #{lastEditTime}</if>
 		</set>
 		where shop_category_id = #{shopCategoryId}

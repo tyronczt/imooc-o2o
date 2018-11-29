@@ -15,12 +15,19 @@ import com.tyron.o2o.entity.ShopCategory;
 public interface ShopCategoryDao {
 
 	/**
-	 * 根据查询条件获取列表
+	 * 根据查询条件获取分页列表 
+	 * 需求：1、首页展示一级目录（即parent_id 为 null的店铺类别） 
+	 *    2、点进去某个一级目录加载对应目录下的子目录
+	 *    3、店铺只能挂在店铺二级类别下
+	 *    4、在首页点击某个一级店铺目录 进入店铺展示页面的时候 需要加载对应目录下的子目录
 	 * 
-	 * @param shopCategoryCondition
+	 * @param shopCategoryCondition 查询条件
+	 * @param rowIndex              从第几行开始取
+	 * @param pageSize              取几行
 	 * @return
 	 */
-	List<ShopCategory> selectShopCategory(@Param("shopCategoryCondition") ShopCategory shopCategoryCondition);
+	List<ShopCategory> selectShopCategory(@Param("shopCategoryCondition") ShopCategory shopCategoryCondition,
+			@Param("rowIndex") int rowIndex, @Param("pageSize") int pageSize);
 
 	/**
 	 * 新增商品分类
