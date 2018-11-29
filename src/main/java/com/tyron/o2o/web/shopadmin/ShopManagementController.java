@@ -27,6 +27,7 @@ import com.tyron.o2o.entity.Area;
 import com.tyron.o2o.entity.PersonInfo;
 import com.tyron.o2o.entity.Shop;
 import com.tyron.o2o.entity.ShopCategory;
+import com.tyron.o2o.enums.OperationStatusEnum;
 import com.tyron.o2o.enums.ShopStateEnum;
 import com.tyron.o2o.service.AreaService;
 import com.tyron.o2o.service.ShopCategoryService;
@@ -65,7 +66,7 @@ public class ShopManagementController {
 		List<Area> areaList = new ArrayList<>();
 		List<ShopCategory> shopCategoryList = new ArrayList<>();
 		try {
-			shopCategoryList = shopCategoryService.getShopCategoryList(new ShopCategory());
+			shopCategoryList = shopCategoryService.getShopCategoryList(new ShopCategory(), 1, 99);
 			areaList = areaService.getAreaList();
 			modelMap.put("shopCategoryList", shopCategoryList);
 			modelMap.put("areaList", areaList);
@@ -90,7 +91,7 @@ public class ShopManagementController {
 		// 校验验证码
 		if (!CodeUtil.checkVerifyCode(request)) {
 			modelMap.put("success", false);
-			modelMap.put("errMsg", "验证码输入有误，请重新输入。");
+			modelMap.put("errMsg", OperationStatusEnum.VERIFYCODE_ERROR.getStateInfo());
 			return modelMap;
 		}
 
@@ -117,7 +118,7 @@ public class ShopManagementController {
 		}
 		if (shopImg == null) {
 			modelMap.put("success", false);
-			modelMap.put("errMsg", "上传图片不能为空");
+			modelMap.put("errMsg", OperationStatusEnum.PIC_EMPTY.getStateInfo());
 			return modelMap;
 		}
 
@@ -145,7 +146,7 @@ public class ShopManagementController {
 			return modelMap;
 		} else {
 			modelMap.put("success", false);
-			modelMap.put("errMsg", "请输入店铺信息");
+			modelMap.put("errMsg", ShopStateEnum.NULL_SHOP_INFO.getStateInfo());
 			return modelMap;
 		}
 	}
@@ -176,7 +177,7 @@ public class ShopManagementController {
 			}
 		} else {
 			modelMap.put("success", false);
-			modelMap.put("errMsg", "shopId empty!");
+			modelMap.put("errMsg", ShopStateEnum.NULL_SHOPID.getStateInfo());
 		}
 		return modelMap;
 	}
@@ -194,7 +195,7 @@ public class ShopManagementController {
 		// 校验验证码
 		if (!CodeUtil.checkVerifyCode(request)) {
 			modelMap.put("success", false);
-			modelMap.put("errMsg", "验证码输入有误，请重新输入。");
+			modelMap.put("errMsg", OperationStatusEnum.VERIFYCODE_ERROR.getStateInfo());
 			return modelMap;
 		}
 
@@ -222,7 +223,7 @@ public class ShopManagementController {
 		// 2、修改店铺，尽量不要依靠前端信息
 		if (shop != null && shop.getShopId() > 0) {
 			ShopExecution se = shopService.modifyShop(shop, shopImg);
-			if (se.getState() == ShopStateEnum.SUCCESS.getState()) {
+			if (se.getState() == OperationStatusEnum.SUCCESS.getState()) {
 				modelMap.put("success", true);
 			} else {
 				modelMap.put("success", false);
@@ -231,7 +232,7 @@ public class ShopManagementController {
 			return modelMap;
 		} else {
 			modelMap.put("success", false);
-			modelMap.put("errMsg", "请输入店铺id");
+			modelMap.put("errMsg", ShopStateEnum.NULL_SHOPID.getStateInfo());
 			return modelMap;
 		}
 	}

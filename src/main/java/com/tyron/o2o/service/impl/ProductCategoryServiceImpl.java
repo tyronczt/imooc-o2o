@@ -13,6 +13,7 @@ import com.tyron.o2o.dao.ProductCategoryDao;
 import com.tyron.o2o.dao.ProductDao;
 import com.tyron.o2o.dto.ProductCategoryExecution;
 import com.tyron.o2o.entity.ProductCategory;
+import com.tyron.o2o.enums.OperationStatusEnum;
 import com.tyron.o2o.enums.ProductCategoryStateEnum;
 import com.tyron.o2o.exceptions.ProductCategoryOperationException;
 import com.tyron.o2o.service.ProductCategoryService;
@@ -61,13 +62,13 @@ public class ProductCategoryServiceImpl implements ProductCategoryService {
 			try {
 				int effectedNum = productCategoryDao.batchInsertProductCategory(productCategoryList);
 				if (effectedNum <= 0) {
-					throw new ProductCategoryOperationException("店铺类别创建失败");
+					throw new ProductCategoryOperationException("");
 				} else {
-					return new ProductCategoryExecution(ProductCategoryStateEnum.SUCCESS, productCategoryList,
-							effectedNum);
+					return new ProductCategoryExecution(OperationStatusEnum.SUCCESS, productCategoryList, effectedNum);
 				}
 			} catch (Exception e) {
-				throw new ProductCategoryOperationException("batchAddProductCategory error" + e.getMessage());
+				throw new ProductCategoryOperationException(
+						ProductCategoryStateEnum.EDIT_ERROR.getStateInfo() + e.getMessage());
 			}
 		} else {
 			return new ProductCategoryExecution(ProductCategoryStateEnum.EMPETY_LIST);
@@ -88,7 +89,7 @@ public class ProductCategoryServiceImpl implements ProductCategoryService {
 		try {
 			int effectNum = productDao.updateProductCategoryToNull(productCategoryId);
 			if (effectNum < 0) {
-				throw new ProductCategoryOperationException("商品类别更新失败");
+				throw new ProductCategoryOperationException(ProductCategoryStateEnum.EDIT_ERROR.getStateInfo());
 			}
 		} catch (ProductCategoryOperationException e) {
 			throw new ProductCategoryOperationException("deleteProductCategory error" + e.getMessage());
@@ -98,9 +99,9 @@ public class ProductCategoryServiceImpl implements ProductCategoryService {
 		try {
 			int effectedNum = productCategoryDao.deleteProductCategory(productCategoryId, shopId);
 			if (effectedNum <= 0) {
-				throw new ProductCategoryOperationException("商品类别删除失败");
+				throw new ProductCategoryOperationException(ProductCategoryStateEnum.DELETE_ERROR.getStateInfo());
 			} else {
-				return new ProductCategoryExecution(ProductCategoryStateEnum.SUCCESS, null, effectedNum);
+				return new ProductCategoryExecution(OperationStatusEnum.SUCCESS, null, effectedNum);
 			}
 		} catch (Exception e) {
 			throw new ProductCategoryOperationException("deleteProductCategory error" + e.getMessage());

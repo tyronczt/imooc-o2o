@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.tyron.o2o.web.shopadmin;
 
 import java.util.Date;
@@ -21,6 +18,7 @@ import com.tyron.o2o.dto.ProductCategoryExecution;
 import com.tyron.o2o.dto.Result;
 import com.tyron.o2o.entity.ProductCategory;
 import com.tyron.o2o.entity.Shop;
+import com.tyron.o2o.enums.OperationStatusEnum;
 import com.tyron.o2o.enums.ProductCategoryStateEnum;
 import com.tyron.o2o.exceptions.ProductCategoryOperationException;
 import com.tyron.o2o.service.ProductCategoryService;
@@ -49,18 +47,16 @@ public class ProductCategoryController {
 	public Result<List<ProductCategory>> getProductCategoryList(HttpServletRequest request) {
 		List<ProductCategory> productCategoryList;
 		ProductCategoryStateEnum ps;
-		// 在进入到
-		// shop管理页面（即调用getShopManageInfo方法时）,如果shopId合法，便将该shop信息放在了session中，key为currentShop
+		// 在进入到shop管理页面（即调用getShopManageInfo方法时）,如果shopId合法，便将该shop信息放在了session中，key为currentShop
 		// 这里我们不依赖前端的传入，因为不安全。 我们在后端通过session来做
 		Shop currentShop = (Shop) request.getSession().getAttribute("currentShop");
-
 		if (currentShop != null && currentShop.getShopId() != null) {
 			try {
 				productCategoryList = productCategoryService.getProductCategoryList(currentShop.getShopId());
 				return new Result<List<ProductCategory>>(true, productCategoryList);
 			} catch (Exception e) {
 				e.printStackTrace();
-				ps = ProductCategoryStateEnum.INNER_ERROR;
+				ps = ProductCategoryStateEnum.EDIT_ERROR;
 				return new Result<List<ProductCategory>>(false, ps.getState(), ps.getStateInfo());
 			}
 		} else {
@@ -95,7 +91,7 @@ public class ProductCategoryController {
 				// 批量插入
 				ProductCategoryExecution productCategoryExecution = productCategoryService
 						.batchAddProductCategory(productCategoryList);
-				if (productCategoryExecution.getState() == ProductCategoryStateEnum.SUCCESS.getState()) {
+				if (productCategoryExecution.getState() == OperationStatusEnum.SUCCESS.getState()) {
 					modelMap.put("success", true);
 					// 同时也将新增成功的数量返回给前台
 					modelMap.put("effectNum", productCategoryExecution.getCount());
@@ -110,9 +106,8 @@ public class ProductCategoryController {
 			}
 		} else {
 			modelMap.put("success", false);
-			modelMap.put("errMsg", "至少输入一个店铺目录信息");
+			modelMap.put("errMsg", ProductCategoryStateEnum.EMPETY_LIST.getStateInfo());
 		}
-
 		return modelMap;
 	}
 
@@ -135,7 +130,7 @@ public class ProductCategoryController {
 					Long shopId = currentShop.getShopId();
 					ProductCategoryExecution pce = productCategoryService.deleteProductCategory(productCategoryId,
 							shopId);
-					if (pce.getState() == ProductCategoryStateEnum.SUCCESS.getState()) {
+					if (pce.getState() == OperationStatusEnum.SUCCESS.getState()) {
 						modelMap.put("success", true);
 					} else {
 						modelMap.put("success", false);
@@ -153,9 +148,8 @@ public class ProductCategoryController {
 			}
 		} else {
 			modelMap.put("success", false);
-			modelMap.put("errMsg", "请选择商品类别");
+			modelMap.put("errMsg", ProductCategoryStateEnum.EMPETY_LIST.getStateInfo());
 		}
 		return modelMap;
 	}
-
 }
