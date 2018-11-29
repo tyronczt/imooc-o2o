@@ -8,7 +8,8 @@ package com.tyron.o2o.enums;
  */
 public enum ProductStateEnum {
 
-	OFFLINE(-1, "非法商品"), SUCCESS(0, "操作成功"), PASS(2, "通过认证"), INNER_ERROR(-1001, "操作失败"), EMPTY(-1002, "商品为空");
+	PRODUCT_EMPTY(-2001, "请输入商品信息"), EDIT_ERROR(-2002, "商品编辑失败"), EMPTY(-2003, "商品为空"),
+	PRODUCT_ID_EMPTY(-2004, "商品ID为空"),;
 
 	private int state;
 	private String stateInfo;

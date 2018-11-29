@@ -1,7 +1,7 @@
 package com.tyron.o2o.enums;
 
 /**
- * @Description: 店铺类别状态枚举
+ * @Description: 店铺类别
  *
  * @author: tyron
  * @date: 2018年11月29日
