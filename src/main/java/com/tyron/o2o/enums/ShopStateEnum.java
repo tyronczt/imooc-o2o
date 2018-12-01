@@ -7,9 +7,9 @@ package com.tyron.o2o.enums;
  * @date 2018年4月10日
  */
 public enum ShopStateEnum {
-	CHECK(0, "审核中"), OFFLINE(-2001, "非法商铺"), PASS(2, "通过认证"), EDIT_ERROR(-2002, "店铺操作失败"), NULL_SHOPID(-2003, "ShopId为空"),
-	NULL_SHOP_INFO(-2004, "店铺信息为空");
-	
+	CHECK(0, "审核中"), PASS(1, "通过认证"), OFFLINE(-2001, "非法商铺"), EDIT_ERROR(-2002, "店铺操作失败"),
+	NULL_SHOPID(-2003, "ShopId为空"), NULL_SHOP_INFO(-2004, "店铺信息为空");
+
 	private int state;
 	private String stateInfo;
 
