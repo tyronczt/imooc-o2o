@@ -19,20 +19,17 @@
 		<result column="advice" property="advice" />
 
 		<!-- 复合对象 -->
-		<association column="owner_id" property="owner"
-			javaType="com.tyron.o2o.entity.PersonInfo">
+		<association column="owner_id" property="owner" javaType="com.tyron.o2o.entity.PersonInfo">
 			<id column="user_id" property="userId" />
 			<result column="name" property="name" />
 		</association>
 
-		<association column="area_id" property="area"
-			javaType="com.tyron.o2o.entity.Area">
+		<association column="area_id" property="area" javaType="com.tyron.o2o.entity.Area">
 			<id column="area_id" property="areaId" />
 			<result column="area_name" property="areaName" />
 		</association>
 
-		<association property="shopCategory" column="shop_category_id"
-			javaType="com.tyron.o2o.entity.ShopCategory">
+		<association property="shopCategory" column="shop_category_id" javaType="com.tyron.o2o.entity.ShopCategory">
 			<id column="shop_category_id" property="shopCategoryId" />
 			<result column="shop_category_name" property="shopCategoryName" />
 		</association>
@@ -66,13 +63,19 @@
 		<if test="shopCondition.area != null and shopCondition.area.areaId != null ">
 			and s.area_id = #{shopCondition.area.areaId}
 		</if>
-		<!-- 商铺状态  -->
+		<!-- 店铺状态  -->
 		<if test="shopCondition.enableStatus !=null">
 			and s.enable_status = #{shopCondition.enableStatus}
 		</if>
-		<!-- 商铺类别  -->
+		<!-- 店铺类别  -->
 		<if test="shopCondition.shopCategory != null and shopCondition.shopCategory.shopCategoryId != null ">
 			and s.shop_category_id = #{shopCondition.shopCategory.shopCategoryId}
+		</if>
+		<!-- 取出父类类别下的店铺  -->
+		<if test="shopCondition.shopCategory != null and shopCondition.shopCategory.parent != null 
+		and shopCondition.shopCategory.parent.shopCategoryId != null">
+			and s.shop_category_id in (SELECT shop_category_id FROM tb_shop_category
+			WHERE parent_id = #{shopCondition.shopCategory.parent.shopCategoryId})
 		</if>
 		<!-- owner  -->
 		<if test="shopCondition.owner != null and shopCondition.owner.userId != null">
