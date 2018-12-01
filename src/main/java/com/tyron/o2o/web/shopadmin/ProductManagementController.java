@@ -164,7 +164,7 @@ public class ProductManagementController {
 		// Step1:校验验证码
 		if (!CodeUtil.checkVerifyCode(request)) {
 			modelMap.put("success", false);
-			modelMap.put("errMsg", "验证码输入有误，请重新输入");
+			modelMap.put("errMsg", OperationStatusEnum.VERIFYCODE_ERROR.getStateInfo());
 			return modelMap;
 		}
 
@@ -244,7 +244,7 @@ public class ProductManagementController {
 		// 状态改变且验证码错误时，返回
 		if (!statusChange && !CodeUtil.checkVerifyCode(request)) {
 			modelMap.put("success", false);
-			modelMap.put("errMsg", "验证码有误，请重新输入");
+			modelMap.put("errMsg", OperationStatusEnum.VERIFYCODE_ERROR.getStateInfo());
 			return modelMap;
 		}
 
@@ -300,7 +300,7 @@ public class ProductManagementController {
 			}
 		} else {
 			modelMap.put("success", false);
-			modelMap.put("errMsg", "请输入商品信息");
+			modelMap.put("errMsg", ProductStateEnum.PRODUCT_EMPTY.getStateInfo());
 		}
 		return modelMap;
 	}
