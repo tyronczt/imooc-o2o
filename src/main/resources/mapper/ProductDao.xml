@@ -32,8 +32,8 @@
 		<!-- 一对多使用collection product中的属性为productImgList，并且是通过库表中的product_id关联起来的，保存的类型为com.imooc.myo2o.entity.ProductImg -->
 		<collection property="productImgList" column="product_id" ofType="com.tyron.o2o.entity.ProductImg">
 			<id column="product_img_id" property="productImgId" />
-			<result column="img_addr" property="imgAddr" />
-			<result column="img_desc" property="imgDesc" />
+			<result column="pi_img_addr" property="piImgAddr" />
+			<result column="pi_img_desc" property="piImgDesc" />
 			<result column="priority" property="priority" />
 			<result column="create_time" property="createTime" />
 			<result column="product_id" property="productId" />
@@ -64,22 +64,22 @@
 			p.enable_status,
 			p.product_category_id,
 			p.shop_id,
-			pm.product_img_id,
-			pm.img_addr,
-			pm.img_desc,
-			pm.priority,
-			pm.create_time
+			pi.product_img_id,
+			pi.img_addr as pi_img_addr,
+			pi.img_desc as pi_img_desc,
+			pi.priority,
+			pi.create_time
 		FROM
 			tb_product p
 		 <!-- 左连接LEFT JOIN，（即使该商品没有商品详情图片，也查询出来该商铺） -->
 		LEFT JOIN
-			tb_product_img pm
+			tb_product_img pi
 		ON
-			p.product_id =pm.product_id
+			p.product_id =pi.product_id
 		WHERE
 			p.product_id = #{productId}
 		ORDER BY
-			pm.priority DESC
+			pi.priority ASC
 	</select>
 	
 	<update id="updateProduct" parameterType="com.tyron.o2o.entity.Product">
