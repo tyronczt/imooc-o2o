@@ -1,0 +1,25 @@
+.infinite-scroll-preloader {
+    margin-top: -5px;
+}
+.shoplist-button-div {
+    margin: 0 .3rem;
+}
+.shoplist-button-div > .button {
+    width: 30%;
+    height: 1.5rem;
+    line-height: 1.5rem;
+    display: inline-block;
+    margin: 1%;
+    overflow: hidden;
+}
+.select-wrap {
+    margin: 0 .5rem;
+}
+.select {
+    border: 1px solid #0894ec;
+    color: #0894ec;
+    background-color: #efeff4;
+    width: 100%;
+    height: 1.5rem;
+    font-size: .7rem;
+}
