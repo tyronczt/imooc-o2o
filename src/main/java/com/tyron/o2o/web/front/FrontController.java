@@ -23,4 +23,24 @@ public class FrontController {
 	public String index() {
 		return "front/index";
 	}
+
+	/**
+	 * 商品列表页路由
+	 * 
+	 * @return
+	 */
+	@RequestMapping(value = "/shoplist", method = RequestMethod.GET)
+	public String shopList() {
+		return "front/shoplist";
+	}
+
+	/**
+	 * 商品详情页路由
+	 * 
+	 * @return
+	 */
+	@RequestMapping(value = "/shopdetail", method = RequestMethod.GET)
+	public String shopDetail() {
+		return "front/shopdetail";
+	}
 }
