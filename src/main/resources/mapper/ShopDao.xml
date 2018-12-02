@@ -36,6 +36,7 @@
 	</resultMap>
 	
 	<sql id="selectShopByCondition">
+		1=1
 		<!-- 可输入的查询条件：
 			商铺名（要求模糊查询） 
 			区域Id 
