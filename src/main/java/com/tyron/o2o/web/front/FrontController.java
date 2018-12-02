@@ -25,7 +25,7 @@ public class FrontController {
 	}
 
 	/**
-	 * 商品列表页路由
+	 * 店铺列表页路由
 	 * 
 	 * @return
 	 */
@@ -35,12 +35,22 @@ public class FrontController {
 	}
 
 	/**
-	 * 商品详情页路由
+	 * 店铺详情页路由
 	 * 
 	 * @return
 	 */
 	@RequestMapping(value = "/shopdetail", method = RequestMethod.GET)
 	public String shopDetail() {
 		return "front/shopdetail";
+	}
+
+	/**
+	 * 商品详情页路由
+	 * 
+	 * @return
+	 */
+	@RequestMapping(value = "/productdetail", method = RequestMethod.GET)
+	public String productDetail() {
+		return "front/productdetail";
 	}
 }
