@@ -42,6 +42,7 @@ public class ProductDetailController {
 		long productId = HttpServletRequestUtil.getLong(request, "productId");
 		Product product = null;
 		if (productId != -1) {
+			// 获取商品详情
 			product = productService.getProductById(productId);
 			modelMap.put("product", product);
 			modelMap.put("success", true);
