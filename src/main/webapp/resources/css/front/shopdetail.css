@@ -1,0 +1,20 @@
+.detail-search {
+    height: 2.2rem;
+    padding-right: .5rem;
+    padding-left: .5rem;
+    background-color: #f7f7f8;
+}
+.infinite-scroll-preloader {
+    margin-top: -5px;
+}
+.shopdetail-button-div {
+    margin: 0 .3rem;
+}
+.shopdetail-button-div > .button {
+    width: 30%;
+    height: 1.5rem;
+    line-height: 1.5rem;
+    display: inline-block;
+    margin: 1%;
+    overflow: hidden;
+}
