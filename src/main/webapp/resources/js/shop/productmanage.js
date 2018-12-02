@@ -73,7 +73,7 @@ $(function() {
 		} 
 		// 点击“预览按钮”
 		else if (target.hasClass('preview')) {
-			window.location.href = '/o2o/frontend/productdetail?productId=' + e.currentTarget.dataset.id;
+			window.location.href = '/o2o/front/productdetail?productId=' + e.currentTarget.dataset.id;
 		}
 	});
 
