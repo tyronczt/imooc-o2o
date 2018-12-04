@@ -12,6 +12,7 @@
 		<result column="shop_desc" property="shopDesc" />
 		<result column="shop_addr" property="shopAddr" />
 		<result column="phone" property="phone" />
+		<result column="priority" property="priority"/>
 		<result column="shop_img" property="shopImg" />
 		<result column="create_time" property="createTime" />
 		<result column="last_edit_time" property="lastEditTime" />
