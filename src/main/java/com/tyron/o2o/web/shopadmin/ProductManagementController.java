@@ -51,7 +51,9 @@ public class ProductManagementController {
 	@Autowired
 	private ProductCategoryService productCategoryService;
 
-	// 支持上传商品详情图的最大数量
+	/**
+	 *  支持上传商品详情图的最大数量
+	 */
 	private static final int IMAGE_MAX_COUNT = 6;
 
 	/**

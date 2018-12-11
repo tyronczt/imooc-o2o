@@ -34,7 +34,7 @@ public interface HeadLineDao {
 	/**
 	 * 根据头条Id查询头条信息
 	 * 
-	 * @param headLineId
+	 * @param lineId
 	 * @return
 	 */
 	HeadLine selectHeadLineById(long lineId);

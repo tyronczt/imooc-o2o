@@ -29,6 +29,7 @@ public interface ShopCategoryService {
 	 * 新增商品分类
 	 * 
 	 * @param shopCategory
+	 * @param shopCategoryImg
 	 * @return
 	 */
 	ShopCategoryExecution addShopCategory(ShopCategory shopCategory, MultipartFile shopCategoryImg);

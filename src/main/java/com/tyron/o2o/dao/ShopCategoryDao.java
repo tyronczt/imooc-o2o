@@ -48,7 +48,7 @@ public interface ShopCategoryDao {
 	/**
 	 * 根据Id查询商品分类信息
 	 * 
-	 * @param shopCategory
+	 * @param shopCategoryId
 	 * @return
 	 */
 	ShopCategory selectShopCategoryById(long shopCategoryId);

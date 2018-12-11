@@ -31,6 +31,7 @@ public interface ProductCategoryService {
 	 * 
 	 * @param productCategoryList
 	 * @return
+	 * @throws ProductCategoryOperationException
 	 */
 	ProductCategoryExecution batchAddProductCategory(List<ProductCategory> productCategoryList)
 			throws ProductCategoryOperationException;
