@@ -20,7 +20,7 @@ public class EncryptPropertyPlaceholderConfigurer extends PropertyPlaceholderCon
 		// 判断是否加密
 		if (isEncryptProp(propertyName)) {
 			// 解密
-			String decryptValue = DESUtils.getDecryptString(propertyValue);
+			String decryptValue = DESUtil.getDecryptString(propertyValue);
 			return decryptValue;
 		} else {
 			return propertyValue;
