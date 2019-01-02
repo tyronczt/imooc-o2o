@@ -13,7 +13,7 @@ import com.tyron.o2o.entity.Area;
 public interface AreaService {
 
 	/**
-	 * 获取区域列表
+	 * 获取区域列表,将区域信息放入缓存中
 	 * 
 	 * @return
 	 */

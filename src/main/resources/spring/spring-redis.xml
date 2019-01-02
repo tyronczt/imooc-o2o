@@ -1,0 +1,48 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+        http://www.springframework.org/schema/context 
+        http://www.springframework.org/schema/context/spring-context-3.2.xsd">
+	<!-- Redis连接池的设置 -->
+	<bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig">
+		<!-- 控制一个pool可分配多少个jedis实例 -->
+		<property name="maxTotal" value="${redis.pool.maxActive}" />
+		<!-- 连接池中最多可空闲maxIdle个连接，取值20，表示即使没有数据库连接时依然可以保持20空闲的连接，而不被清除， 随时处于待命状态 -->
+		<property name="maxIdle" value="${redis.pool.maxIdle}" />
+		<!-- 最大等待时间：当没有可用连接时，连接池等待连接被归还的最大时间（毫秒），超过时间则抛出异常 -->
+		<property name="maxWaitMillis" value="${redis.pool.maxWait}" />
+		<!-- 在获取连接的时候检查有效性 -->
+		<property name="testOnBorrow" value="${redis.pool.testOnBorrow}" />
+	</bean>
+
+	<!-- 创建Redis连接池，并做相关配置 -->
+	<bean id="jedisWritePool" class="com.tyron.o2o.cache.JedisPoolWriper" depends-on="jedisPoolConfig">
+		<constructor-arg index="0" ref="jedisPoolConfig" />
+		<constructor-arg index="1" value="${redis.hostname}" />
+		<constructor-arg index="2" value="${redis.port}" type="int" />
+	</bean>
+	
+	<!-- 创建Redis工具类，封装好Redis的连接以进行相关的操作 -->
+	<bean id="jedisKeys" class="com.tyron.o2o.cache.JedisUtil$Keys" scope="singleton">
+		<constructor-arg ref="jedisUtil"></constructor-arg>
+	</bean>
+	<bean id="jedisStrings" class="com.tyron.o2o.cache.JedisUtil$Strings" scope="singleton">
+		<constructor-arg ref="jedisUtil"></constructor-arg>
+	</bean>
+	<bean id="jedisLists" class="com.tyron.o2o.cache.JedisUtil$Lists" scope="singleton">
+		<constructor-arg ref="jedisUtil"></constructor-arg>
+	</bean>
+	<bean id="jedisSets" class="com.tyron.o2o.cache.JedisUtil$Sets" scope="singleton">
+		<constructor-arg ref="jedisUtil"></constructor-arg>
+	</bean>
+	<bean id="jedisHash" class="com.tyron.o2o.cache.JedisUtil$Hash" scope="singleton">
+		<constructor-arg ref="jedisUtil"></constructor-arg>
+	</bean>
+	<bean id="jedisUtil" class="com.tyron.o2o.cache.JedisUtil" scope="singleton">
+		<property name="jedisPool">
+			<ref bean="jedisWritePool" />
+		</property>
+	</bean>
+</beans>    
