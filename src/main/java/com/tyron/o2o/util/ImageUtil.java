@@ -111,7 +111,7 @@ public class ImageUtil {
 	 * @param targetAddr 图片存储路径
 	 * @return
 	 */
-	public static String generateNormalImg(MultipartFile thumbnail, String targetAddr) {
+	public static String generateProductImg(MultipartFile thumbnail, String targetAddr) {
 		// 获取随机文件名，防止文件重名
 		String realFileName = getRandomFileName();
 		// 获取文件扩展名
