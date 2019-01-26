@@ -66,7 +66,7 @@ public class ShopManagementController {
 		List<Area> areaList = new ArrayList<>();
 		List<ShopCategory> shopCategoryList = new ArrayList<>();
 		try {
-			shopCategoryList = shopCategoryService.getShopCategoryList(new ShopCategory(), 1, 99);
+			shopCategoryList = shopCategoryService.getShopCategoryList(new ShopCategory());
 			areaList = areaService.getAreaList();
 			modelMap.put("shopCategoryList", shopCategoryList);
 			modelMap.put("areaList", areaList);

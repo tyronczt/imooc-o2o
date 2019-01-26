@@ -26,7 +26,6 @@
 		</where>
 		order by
 		priority asc
-		LIMIT #{rowIndex}, #{pageSize}
 	</select>
 
 	<insert id="insertShopCategory" useGeneratedKeys="true" keyColumn="shop_category_id" keyProperty="shopCategoryId">
