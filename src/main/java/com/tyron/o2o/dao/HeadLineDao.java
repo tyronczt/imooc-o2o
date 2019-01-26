@@ -32,6 +32,14 @@ public interface HeadLineDao {
 	List<HeadLine> selectHeadLineList(@Param("headLineConditon") HeadLine headLineCondition);
 
 	/**
+	 * 根据Id列表查询头条信息列表
+	 * 
+	 * @param lineIdList
+	 * @return
+	 */
+	List<HeadLine> selectHeadLineByIds(List<Long> lineIdList);
+
+	/**
 	 * 根据头条Id查询头条信息
 	 * 
 	 * @param lineId
@@ -46,5 +54,21 @@ public interface HeadLineDao {
 	 * @return
 	 */
 	int updateHeadLine(HeadLine headLine);
+
+	/**
+	 * 根据Id删除头条
+	 * 
+	 * @param headLineId
+	 * @return
+	 */
+	int deleteHeadLine(long headLineId);
+
+	/**
+	 * 批量删除头条记录
+	 * 
+	 * @param lineIdList
+	 * @return
+	 */
+	int batchDeleteHeadLine(List<Long> lineIdList);
 
 }
