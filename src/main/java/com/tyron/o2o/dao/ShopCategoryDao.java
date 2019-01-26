@@ -22,12 +22,9 @@ public interface ShopCategoryDao {
 	 *    4、在首页点击某个一级店铺目录 进入店铺展示页面的时候 需要加载对应目录下的子目录
 	 * 
 	 * @param shopCategoryCondition 查询条件
-	 * @param rowIndex              从第几行开始取
-	 * @param pageSize              取几行
 	 * @return
 	 */
-	List<ShopCategory> selectShopCategory(@Param("shopCategoryCondition") ShopCategory shopCategoryCondition,
-			@Param("rowIndex") int rowIndex, @Param("pageSize") int pageSize);
+	List<ShopCategory> selectShopCategory(@Param("shopCategoryCondition") ShopCategory shopCategoryCondition);
 
 	/**
 	 * 新增商品分类
