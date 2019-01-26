@@ -176,7 +176,7 @@ public class ProductServiceImpl implements ProductService {
 		List<ProductImg> productImgs = new ArrayList<>();
 		// 遍历商品详情图，并添加到productImg中
 		for (MultipartFile multipartFile : productImgList) {
-			String imgAddr = ImageUtil.generateNormalImg(multipartFile, dest);
+			String imgAddr = ImageUtil.generateProductImg(multipartFile, dest);
 			ProductImg productImg = new ProductImg();
 			productImg.setProductId(product.getProductId());
 			productImg.setImgAddr(imgAddr);

@@ -4,34 +4,54 @@
 <mapper namespace="com.tyron.o2o.dao.HeadLineDao">
 	<select id="selectHeadLineList" resultType="com.tyron.o2o.entity.HeadLine">
 		SELECT
-			line_id,
-			line_name,
-			line_link,
-			line_img,
-			priority,
-			enable_status,
-			create_time,
-			last_edit_time
+		line_id,
+		line_name,
+		line_link,
+		line_img,
+		priority,
+		enable_status,
+		create_time,
+		last_edit_time
 		FROM
-			tb_head_line
+		tb_head_line
 		<where>
 			<if test="headLineConditon.enableStatus != null">
 				and enable_status = #{headLineConditon.enableStatus}
 			</if>
 		</where>
-		ORDER  BY 
-			priority 
-		DESC 
+		ORDER BY
+		priority
+		DESC
 	</select>
-	
-	<insert id="insertHeadLine" parameterType="com.tyron.o2o.entity.HeadLine" useGeneratedKeys="true"
-	keyProperty="lineId" keyColumn="line_id">
-		INSERT INTO 
+
+	<select id="selectHeadLineByIds" resultType="com.tyron.o2o.entity.HeadLine" parameterType="long">
+		SELECT
+		line_id,
+		line_name,
+		line_link,
+		line_img,
+		priority,
+		enable_status,
+		create_time,
+		last_edit_time
+		FROM
 		tb_head_line
-		(line_name, line_link, line_img, priority, enable_status, create_time, last_edit_time)
-		VALUES(#{lineName}, #{lineLink}, #{lineImg}, #{priority}, #{enableStatus}, #{createTime}, #{lastEditTime});
+		WHERE line_id IN
+		<foreach collection="list" item="lineId" open="(" separator="," close=")">
+			#{lineId}
+		</foreach>
+	</select>
+
+	<insert id="insertHeadLine" parameterType="com.tyron.o2o.entity.HeadLine" useGeneratedKeys="true"
+		keyProperty="lineId" keyColumn="line_id">
+		INSERT INTO
+		tb_head_line
+		(line_name, line_link, line_img, priority, enable_status, create_time,
+		last_edit_time)
+		VALUES(#{lineName}, #{lineLink}, #{lineImg},
+		#{priority}, #{enableStatus}, #{createTime}, #{lastEditTime});
 	</insert>
-	
+
 	<update id="updateHeadLine" parameterType="com.tyron.o2o.entity.HeadLine">
 		update tb_head_line
 		<!-- 注意后面的逗号 -->
@@ -45,21 +65,38 @@
 		</set>
 		where line_id = #{lineId}
 	</update>
-	
+
 	<select id="selectHeadLineById" resultType="com.tyron.o2o.entity.HeadLine">
 		SELECT
-			line_id,
-			line_name,
-			line_link,
-			line_img,
-			priority,
-			enable_status,
-			create_time,
-			last_edit_time
+		line_id,
+		line_name,
+		line_link,
+		line_img,
+		priority,
+		enable_status,
+		create_time,
+		last_edit_time
 		FROM
-			tb_head_line
+		tb_head_line
 		<where>
 			line_id = #{lineId}
 		</where>
 	</select>
+
+	<delete id="deleteHeadLine">
+		DELETE FROM
+		tb_head_line
+		WHERE
+		line_id =
+		#{lineId}
+	</delete>
+
+	<delete id="batchDeleteHeadLine" parameterType="long">
+		DELETE FROM
+		tb_head_line
+		WHERE line_id IN
+		<foreach collection="list" item="lineId" open="(" separator="," close=")">
+			#{lineId}
+		</foreach>
+	</delete>
 </mapper>
