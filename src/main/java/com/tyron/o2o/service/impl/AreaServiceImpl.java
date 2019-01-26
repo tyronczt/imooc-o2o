@@ -37,8 +37,6 @@ public class AreaServiceImpl implements AreaService {
 	@Autowired
 	private JedisUtil.Strings jedisStrings;
 
-	// Redis中区域信息的key
-	private static String AREALISTKEY = "arealist";
 	private static Logger logger = LoggerFactory.getLogger(AreaServiceImpl.class);
 
 	/*
@@ -50,7 +48,7 @@ public class AreaServiceImpl implements AreaService {
 	@Transactional
 	public List<Area> getAreaList() {
 		// key
-		String key = AREALISTKEY;
+		String key = AREA_LIST_KEY;
 		List<Area> areaList = null;
 		ObjectMapper mapper = new ObjectMapper();
 		// 如果Redis中未存在key
