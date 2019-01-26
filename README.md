@@ -25,4 +25,5 @@
 [8、前端页面模块](https://blog.csdn.net/tian330726/article/details/84649220)<br/>
 [9、阿里云部署](https://blog.csdn.net/tian330726/article/details/84996587)<br/>
 [10、DES加密](https://blog.csdn.net/tian330726/article/details/85255912)<br/>
+[11、Redis缓存](https://blog.csdn.net/tian330726/article/details/86619065)<br/>
 线上演示地址：http://o2o.tyronblog.com:8088/o2o/front/index
