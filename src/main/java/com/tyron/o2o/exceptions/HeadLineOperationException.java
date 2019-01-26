@@ -6,11 +6,11 @@ package com.tyron.o2o.exceptions;
  * @author tyronchen
  * @date 2019年1月24日
  */
-public class HeadLineException extends RuntimeException {
+public class HeadLineOperationException extends RuntimeException {
 
 	private static final long serialVersionUID = 1L;
 
-	public HeadLineException(String msg) {
+	public HeadLineOperationException(String msg) {
 		super(msg);
 	}
 
