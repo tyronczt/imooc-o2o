@@ -14,16 +14,15 @@ import com.tyron.o2o.entity.ShopCategory;
  * @date 2018年5月27日
  */
 public interface ShopCategoryService {
+	public final static String SC_LIST_KEY = "shopcategorylist";
 
 	/**
 	 * 条件获取店铺类别分页列表
 	 * 
 	 * @param shopCategoryCondition 查询条件
-	 * @param pageIndex             第几页
-	 * @param pageSize              每页条数
 	 * @return
 	 */
-	List<ShopCategory> getShopCategoryList(ShopCategory shopCategoryCondition, int pageIndex, int pageSize);
+	List<ShopCategory> getShopCategoryList(ShopCategory shopCategoryCondition);
 
 	/**
 	 * 新增商品分类
@@ -49,4 +48,5 @@ public interface ShopCategoryService {
 	 * @return
 	 */
 	ShopCategory getShopCategoryById(long shopCategoryId);
+
 }
