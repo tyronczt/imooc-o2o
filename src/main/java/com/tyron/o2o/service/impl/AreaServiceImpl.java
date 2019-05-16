@@ -72,7 +72,7 @@ public class AreaServiceImpl implements AreaService {
 			String jsonString = jedisStrings.get(key);
 			JavaType javaType = mapper.getTypeFactory().constructParametricType(ArrayList.class, Area.class);
 			try {
-				mapper.readValue(jsonString, javaType);
+				areaList = mapper.readValue(jsonString, javaType);
 			} catch (JsonParseException e) {
 				e.printStackTrace();
 				logger.error(e.getMessage());
