@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tyron.o2o.dao.LocalAuthDao">
+	<resultMap id="localAuthResultMap" type="com.tyron.o2o.entity.LocalAuth">
+		<!-- 主键 -->
+		<id column="local_auth_id" property="localAuthId" />
+		<!--column对应库表中的字段名 property对应实体类中的属性名 -->
+		<result column="username" property="username" />
+		<result column="password" property="password" />
+		<result column="create_time" property="createTime" />
+		<result column="last_edit_time" property="lastEditTime" />
+
+		<!-- 复合对象 -->
+		<association column="user_id" property="personInfo" javaType="com.tyron.o2o.entity.PersonInfo">
+			<id column="user_id" property="userId" />
+			<result column="name" property="name" />
+			<result column="gender" property="gender" />
+			<result column="profile_img" property="profileImg" />
+			<result column="email" property="email" />
+			<result column="enable_status" property="enableStatus" />
+			<result column="user_type" property="userType" />
+			<result column="create_time" property="createTime" />
+			<result column="last_edit_time" property="lastEditTime" />
+		</association>
+	</resultMap>
+	
+	<insert id="insertLocalAuth" parameterType="com.tyron.o2o.entity.LocalAuth"
+		useGeneratedKeys="true" keyProperty="localAuthId" keyColumn="local_auth_id">
+		INSERT INTO
+		tb_local_auth(username,password,user_id,create_time,last_edit_time)
+		VALUES
+		(#{username},#{password},#{personInfo.userId},#{createTime},#{lastEditTime})
+	</insert>
+
+	<update id="updateLocalAuth">
+		update tb_local_auth
+		<set>
+			<if test="newPassword != null">password=#{newPassword},</if>
+			<if test="lastEditTime != null">last_edit_time=#{lastEditTime}</if>
+		</set>
+		where 
+		username=#{username} AND password=#{password}
+	</update>
+
+	<select id="queryLocalByUserId" resultMap="localAuthResultMap" parameterType="long">
+		SELECT
+		l.local_auth_id,
+		l.user_id,
+		l.username,
+		l.password,
+		l.create_time,
+		l.last_edit_time,
+		p.user_id,
+		p.name,
+		p.gender,
+		p.email,
+		p.user_type,
+		p.create_time,
+		p.last_edit_time,
+		p.enable_status
+		FROM
+		tb_local_auth l
+		LEFT JOIN
+		tb_person_info p
+		ON l.user_id = p.user_id
+		WHERE
+		l.user_id = #{userId}
+	</select>
+
+	<select id="queryLocalByUsernameAndPwd" resultMap="localAuthResultMap">
+		SELECT
+		l.local_auth_id,
+		l.user_id,
+		l.username,
+		l.password,
+		l.create_time,
+		l.last_edit_time,
+		p.user_id,
+		p.name,
+		p.gender,
+		p.email,
+		p.user_type,
+		p.create_time,
+		p.last_edit_time,
+		p.enable_status
+		FROM
+		tb_local_auth l
+		LEFT JOIN
+		tb_person_info p
+		ON l.user_id = p.user_id
+		WHERE
+		l.username = #{username}
+		AND
+		l.password = #{password}
+	</select>
+</mapper>

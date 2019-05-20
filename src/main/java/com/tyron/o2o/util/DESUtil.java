@@ -93,7 +93,7 @@ public class DESUtil {
 
 	// 测试
 	public static void main(String[] args) {
-		System.out.println(getEncryptString("root"));
+		System.out.println(getEncryptString("47.98.109.124"));
 		System.out.println(getDecryptString("YshtT9w5IlQ="));
 	}
 

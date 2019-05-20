@@ -9,19 +9,16 @@ import java.util.Date;
  * @date 2018年3月24日
  */
 public class PersonInfo {
+
 	private Long userId;
 	private String name;
-	private Date birthday;
-	private String gender;
-	private String phone;
-	private String email;
 	private String profileImg;
-	private Integer customerFlag;
-	private Integer shopOwnerFlag;
-	private Integer adminFlag;
+	private String gender;
+	private String email;
+	private Integer enableStatus;
+	private Integer userType;
 	private Date createTime;
 	private Date lastEditTime;
-	private Integer enableStatus;
 
 	public Long getUserId() {
 		return userId;
@@ -39,12 +36,12 @@ public class PersonInfo {
 		this.name = name;
 	}
 
-	public Date getBirthday() {
-		return birthday;
+	public String getProfileImg() {
+		return profileImg;
 	}
 
-	public void setBirthday(Date birthday) {
-		this.birthday = birthday;
+	public void setProfileImg(String profileImg) {
+		this.profileImg = profileImg;
 	}
 
 	public String getGender() {
@@ -55,14 +52,6 @@ public class PersonInfo {
 		this.gender = gender;
 	}
 
-	public String getPhone() {
-		return phone;
-	}
-
-	public void setPhone(String phone) {
-		this.phone = phone;
-	}
-
 	public String getEmail() {
 		return email;
 	}
@@ -71,36 +60,20 @@ public class PersonInfo {
 		this.email = email;
 	}
 
-	public String getProfileImg() {
-		return profileImg;
+	public Integer getEnableStatus() {
+		return enableStatus;
 	}
 
-	public void setProfileImg(String profileImg) {
-		this.profileImg = profileImg;
+	public void setEnableStatus(Integer enableStatus) {
+		this.enableStatus = enableStatus;
 	}
 
-	public Integer getCustomerFlag() {
-		return customerFlag;
+	public Integer getUserType() {
+		return userType;
 	}
 
-	public void setCustomerFlag(Integer customerFlag) {
-		this.customerFlag = customerFlag;
-	}
-
-	public Integer getShopOwnerFlag() {
-		return shopOwnerFlag;
-	}
-
-	public void setShopOwnerFlag(Integer shopOwnerFlag) {
-		this.shopOwnerFlag = shopOwnerFlag;
-	}
-
-	public Integer getAdminFlag() {
-		return adminFlag;
-	}
-
-	public void setAdminFlag(Integer adminFlag) {
-		this.adminFlag = adminFlag;
+	public void setUserType(Integer userType) {
+		this.userType = userType;
 	}
 
 	public Date getCreateTime() {
@@ -117,14 +90,6 @@ public class PersonInfo {
 
 	public void setLastEditTime(Date lastEditTime) {
 		this.lastEditTime = lastEditTime;
-	}
-
-	public Integer getEnableStatus() {
-		return enableStatus;
-	}
-
-	public void setEnableStatus(Integer enableStatus) {
-		this.enableStatus = enableStatus;
 	}
 
 }
