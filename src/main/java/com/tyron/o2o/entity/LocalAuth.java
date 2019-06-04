@@ -13,7 +13,6 @@ public class LocalAuth {
 	private Long localAuthId;
 	private String username;
 	private String password;
-	private Long userId;
 	private Date createTime;
 	private Date lastEditTime;
 	// 个人信息
@@ -41,14 +40,6 @@ public class LocalAuth {
 
 	public void setPassword(String password) {
 		this.password = password;
-	}
-
-	public Long getUserId() {
-		return userId;
-	}
-
-	public void setUserId(Long userId) {
-		this.userId = userId;
 	}
 
 	public Date getCreateTime() {
