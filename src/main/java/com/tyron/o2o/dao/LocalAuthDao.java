@@ -26,10 +26,10 @@ public interface LocalAuthDao {
 	/**
 	 * 根据用户ID查询用户信息
 	 * 
-	 * @param userId 用户ID
+	 * @param localAuthId 用户ID
 	 * @return 用户信息
 	 */
-	LocalAuth queryLocalByUserId(long userId);
+	LocalAuth queryLocalByLocalAuthId(long localAuthId);
 
 	/**
 	 * 添加平台账号
@@ -48,8 +48,7 @@ public interface LocalAuthDao {
 	 * @param lastEditTime 最后修改时间
 	 * @return 修改成功数
 	 */
-	int updateLocalAuth(@Param("username") String username,
-			@Param("password") String password, @Param("newPassword") String newPassword,
-			@Param("lastEditTime") Date lastEditTime);
+	int updateLocalAuth(@Param("username") String username, @Param("password") String password,
+			@Param("newPassword") String newPassword, @Param("lastEditTime") Date lastEditTime);
 
 }
