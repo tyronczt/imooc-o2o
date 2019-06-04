@@ -50,7 +50,6 @@ public class LocalAuthDaoTest extends BaseTest {
 	 * 根据用户名和账号查询用户
 	 */
 	@Test
-	@Ignore
 	public void testQueryLocalByUsernameAndPwd() {
 		LocalAuth localAuth = localAuthDao.queryLocalByUsernameAndPwd(username, password);
 		assertEquals("张三", localAuth.getPersonInfo().getName());
@@ -61,19 +60,20 @@ public class LocalAuthDaoTest extends BaseTest {
 	 */
 	@Test
 	@Ignore
-	public void testQueryLocalByUserId() {
-		LocalAuth localAuth = localAuthDao.queryLocalByUserId(1L);
+	public void testQueryLocalByLocalAuthId() {
+		LocalAuth localAuth = localAuthDao.queryLocalByLocalAuthId(1L);
 		assertEquals("张三", localAuth.getPersonInfo().getName());
 	}
-	
+
 	/**
-	 * 更新账号信息 
+	 * 更新账号信息
 	 */
 	@Test
+	@Ignore
 	public void testUpdateLocalAuth() {
 		Date now = new Date();
-		int effectNum = localAuthDao.updateLocalAuth(1L, username, password, "654321", now);
+		int effectNum = localAuthDao.updateLocalAuth(username, password, "654321", now);
 		assertEquals(1, effectNum);
 	}
-	
+
 }
