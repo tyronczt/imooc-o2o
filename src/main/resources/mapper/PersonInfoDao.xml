@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tyron.o2o.dao.PersonInfoDao"> 
+	<resultMap id="PersonInfoResultMap" type="com.tyron.o2o.entity.PersonInfo">
+		<!-- 主键 -->
+		<id column="user_id" property="userId" />
+		<!--column对应库表中的字段名 property对应实体类中的属性名 -->
+		<result column="local_auth_id" property="localAuthId" />
+		<result column="name" property="name" />
+		<result column="profile_img" property="profileImg" />
+		<result column="email" property="email" />
+		<result column="gender" property="gender" />
+		<result column="enable_status" property="enableStatus" />
+		<result column="user_type" property="userType" />
+		<result column="create_time" property="createTime" />
+		<result column="last_edit_time" property="lastEditTime" />
+	</resultMap>
+
+	<insert id="insertPersonInfo" parameterType="com.tyron.o2o.entity.PersonInfo" useGeneratedKeys="true"
+		keyProperty="userId" keyColumn="user_id">
+		INSERT INTO
+		tb_person_info(local_auth_id,name,profile_img,email,gender,enable_status,user_type,create_time,last_edit_time)
+		VALUES
+		(#{localAuthId},#{name},#{profileImg},#{email},#{gender},#{enableStatus},#{userType},#{createTime},#{lastEditTime})
+	</insert>
+
+	<update id="updatePersonInfo">
+		update tb_person_info
+		<set>
+			<if test="name != null">name = #{name},</if>
+			<if test="profileImg != null">profile_img = #{profileImg},</if>
+			<if test="email != null">email = #{email},</if>
+			<if test="gender != null">gender = #{gender},</if>
+			<if test="enableStatus != null">enable_status = #{enableStatus},</if>
+			<if test="userType != null">user_type = #{userType},</if>
+			<if test="lastEditTime != null">last_edit_time = #{lastEditTime}</if>
+		</set>
+		where
+		user_id=#{userId}
+	</update>
+
+	<select id="queryInfoByUserId" resultMap="PersonInfoResultMap" parameterType="long">
+		SELECT
+		user_id,
+		local_auth_id,
+		name,
+		gender,
+		email,
+		user_type,
+		create_time,
+		last_edit_time,
+		enable_status
+		FROM
+		tb_person_info
+		WHERE
+		user_id=#{userId}
+	</select>
+</mapper>
