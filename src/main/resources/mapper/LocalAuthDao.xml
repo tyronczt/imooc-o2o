@@ -15,6 +15,7 @@
 		<!-- 复合对象 -->
 		<association column="user_id" property="personInfo" javaType="com.tyron.o2o.entity.PersonInfo">
 			<id column="user_id" property="userId" />
+			<result column="local_auth_id" property="localAuthId" />
 			<result column="name" property="name" />
 			<result column="gender" property="gender" />
 			<result column="profile_img" property="profileImg" />
@@ -29,9 +30,9 @@
 	<insert id="insertLocalAuth" parameterType="com.tyron.o2o.entity.LocalAuth"
 		useGeneratedKeys="true" keyProperty="localAuthId" keyColumn="local_auth_id">
 		INSERT INTO
-		tb_local_auth(username,password,user_id,create_time,last_edit_time)
+		tb_local_auth(username,password,create_time,last_edit_time)
 		VALUES
-		(#{username},#{password},#{personInfo.userId},#{createTime},#{lastEditTime})
+		(#{username},#{password},#{createTime},#{lastEditTime})
 	</insert>
 
 	<update id="updateLocalAuth">
@@ -44,15 +45,15 @@
 		username=#{username} AND password=#{password}
 	</update>
 
-	<select id="queryLocalByUserId" resultMap="localAuthResultMap" parameterType="long">
+	<select id="queryLocalByLocalAuthId" resultMap="localAuthResultMap" parameterType="long">
 		SELECT
 		l.local_auth_id,
-		l.user_id,
 		l.username,
 		l.password,
 		l.create_time,
 		l.last_edit_time,
 		p.user_id,
+		p.local_auth_id,
 		p.name,
 		p.gender,
 		p.email,
@@ -64,15 +65,14 @@
 		tb_local_auth l
 		LEFT JOIN
 		tb_person_info p
-		ON l.user_id = p.user_id
+		ON l.local_auth_id = p.local_auth_id
 		WHERE
-		l.user_id = #{userId}
+		l.local_auth_id = #{localAuthId}
 	</select>
 
 	<select id="queryLocalByUsernameAndPwd" resultMap="localAuthResultMap">
 		SELECT
 		l.local_auth_id,
-		l.user_id,
 		l.username,
 		l.password,
 		l.create_time,
@@ -89,7 +89,7 @@
 		tb_local_auth l
 		LEFT JOIN
 		tb_person_info p
-		ON l.user_id = p.user_id
+		ON l.local_auth_id = p.local_auth_id
 		WHERE
 		l.username = #{username}
 		AND
