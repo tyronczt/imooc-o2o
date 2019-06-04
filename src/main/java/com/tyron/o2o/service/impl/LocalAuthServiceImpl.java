@@ -45,8 +45,8 @@ public class LocalAuthServiceImpl implements LocalAuthService {
 	 * @see com.tyron.o2o.service.LocalAuthService#getLocalAuthByUserId(long)
 	 */
 	@Override
-	public LocalAuth getLocalAuthByUserId(long userId) {
-		return localAuthDao.queryLocalByUserId(userId);
+	public LocalAuth queryLocalByLocalAuthId(long localAuthId) {
+		return localAuthDao.queryLocalByLocalAuthId(localAuthId);
 	}
 
 	/*
@@ -69,7 +69,7 @@ public class LocalAuthServiceImpl implements LocalAuthService {
 		try {
 			int effectedNum = localAuthDao.insertLocalAuth(localAuth);
 			if (effectedNum <= 0) {
-				throw new LocalAuthOperationException("本地用户插入失败");
+				throw new LocalAuthOperationException("用户新增失败");
 			} else {
 				return new LocalAuthExecution(OperationStatusEnum.SUCCESS, localAuth);
 			}

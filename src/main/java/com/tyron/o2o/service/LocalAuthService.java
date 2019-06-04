@@ -24,12 +24,12 @@ public interface LocalAuthService {
 	LocalAuth getLocalAuthByUsernameAndPwd(String username, String password);
 
 	/**
-	 * 根据用户名查询本地用户信息
+	 * 根据用户ID查询本地用户信息
 	 * 
-	 * @param userId 用户ID
+	 * @param localAuthId 用户ID
 	 * @return 用户信息
 	 */
-	LocalAuth getLocalAuthByUserId(long userId);
+	LocalAuth queryLocalByLocalAuthId(long localAuthId);
 
 	/**
 	 * 保存本地账号信息
