@@ -9,10 +9,14 @@ import org.springframework.transaction.annotation.Transactional;
 import com.tyron.o2o.dao.LocalAuthDao;
 import com.tyron.o2o.dto.LocalAuthExecution;
 import com.tyron.o2o.entity.LocalAuth;
+import com.tyron.o2o.entity.PersonInfo;
 import com.tyron.o2o.enums.LocalAuthStateEnum;
 import com.tyron.o2o.enums.OperationStatusEnum;
+import com.tyron.o2o.enums.PersonInfoStatusEnum;
+import com.tyron.o2o.enums.PersonInfoTypeEnum;
 import com.tyron.o2o.exceptions.LocalAuthOperationException;
 import com.tyron.o2o.service.LocalAuthService;
+import com.tyron.o2o.service.PersonInfoService;
 import com.tyron.o2o.util.MD5;
 
 /**
@@ -26,6 +30,8 @@ public class LocalAuthServiceImpl implements LocalAuthService {
 
 	@Autowired
 	private LocalAuthDao localAuthDao;
+	@Autowired
+	private PersonInfoService personInfoService;
 
 	/*
 	 * (non-Javadoc)
@@ -69,8 +75,16 @@ public class LocalAuthServiceImpl implements LocalAuthService {
 		try {
 			int effectedNum = localAuthDao.insertLocalAuth(localAuth);
 			if (effectedNum <= 0) {
-				throw new LocalAuthOperationException("用户新增失败");
+				throw new LocalAuthOperationException("用户账号新增失败");
 			} else {
+				// 构建用户信息
+				PersonInfo user = new PersonInfo();
+				user.setLocalAuthId(localAuth.getLocalAuthId());
+				user.setName(localAuth.getUsername());
+				// 默认注册一个有权限访问的顾客
+				user.setEnableStatus(PersonInfoStatusEnum.ALLOW.getState());
+				user.setUserType(PersonInfoTypeEnum.CUSTOMER.getState());
+				personInfoService.insertPersonInfo(user);
 				return new LocalAuthExecution(OperationStatusEnum.SUCCESS, localAuth);
 			}
 		} catch (Exception e) {
@@ -93,7 +107,7 @@ public class LocalAuthServiceImpl implements LocalAuthService {
 			try {
 				int effectedNum = localAuthDao.updateLocalAuth(username, password, MD5.getMd5(newPassword), new Date());
 				if (effectedNum <= 0) {
-					throw new LocalAuthOperationException("本地用户更新失败");
+					throw new LocalAuthOperationException("用户账号更新失败");
 				} else {
 					return new LocalAuthExecution(OperationStatusEnum.SUCCESS);
 				}

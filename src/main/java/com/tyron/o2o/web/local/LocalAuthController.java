@@ -60,7 +60,6 @@ public class LocalAuthController {
 				LocalAuth localAuth = new LocalAuth();
 				localAuth.setUsername(username);
 				localAuth.setPassword(MD5.getMd5(password));
-				localAuth.setCreateTime(new Date());
 				LocalAuthExecution e = localAuthService.saveLocalAuth(localAuth);
 				// 3、操作成功，返回结果
 				if (e.getState() == OperationStatusEnum.SUCCESS.getState()) {
