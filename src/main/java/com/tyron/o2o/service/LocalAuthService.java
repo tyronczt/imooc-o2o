@@ -1,7 +1,5 @@
 package com.tyron.o2o.service;
 
-import java.util.Date;
-
 import com.tyron.o2o.dto.LocalAuthExecution;
 import com.tyron.o2o.entity.LocalAuth;
 import com.tyron.o2o.exceptions.LocalAuthOperationException;
@@ -46,10 +44,9 @@ public interface LocalAuthService {
 	 * @param username     用户名
 	 * @param password     原密码
 	 * @param newPassword  新密码
-	 * @param lastEditTime 最后修改时间
 	 * @return 操作返回信息
 	 * @throws LocalAuthOperationException 继承runtimeException结合事务使用
 	 */
-	LocalAuthExecution modifyLocalAuth(String username, String password, String newPassword, Date lastEditTime)
+	LocalAuthExecution modifyLocalAuth(String username, String password, String newPassword)
 			throws LocalAuthOperationException;
 }
