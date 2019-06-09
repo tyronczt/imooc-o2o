@@ -40,6 +40,8 @@ $(function() {
                              +  '</div>';
             });
             $('.row').html(categoryHtml);
+        } else {
+        	alert(data.errMsg);
         }
     });
     
