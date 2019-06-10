@@ -54,5 +54,29 @@ $(function() {
 			return '';
 		}
 	}
+	
+	// 修改密码
+	$('#change-pwd').click(function() {
+		window.location.href = '/o2o/admin/changepwd';
+	});
+	
+	// 退出登录
+	$('#log-out').click(function () {
+		$.ajax({
+			url : "/o2o/user/logout",
+			type : "post",
+			contentType : false,
+			processData : false,
+			cache : false,
+			success : function(data) {
+				if (data.success) {
+					window.location.href = '/o2o/admin/login';
+				}
+			},
+			error : function(data, error) {
+				alert(error);
+			}
+		});
+	});
 
 });
