@@ -7,7 +7,7 @@ package com.tyron.o2o.enums;
  * @date 2019年5月20日
  */
 public enum LocalAuthStateEnum {
-	LOGINFAIL(-1, "密码或帐号输入有误"), NULL_AUTH_INFO(-1006, "注册信息为空");
+	LOGINFAIL(-1, "密码或帐号输入有误"), NULL_AUTH_INFO(-1001, "注册信息为空"), ERROR_UPDATE(-1002, "更新失败，用户名或密码输入有误");
 
 	private int state;
 
