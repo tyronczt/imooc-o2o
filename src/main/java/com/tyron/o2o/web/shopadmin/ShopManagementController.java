@@ -280,11 +280,7 @@ public class ShopManagementController {
 	@ResponseBody
 	public Map<String, Object> getShopList(HttpServletRequest request) {
 		Map<String, Object> modelMap = new HashMap<>();
-		PersonInfo user = new PersonInfo();
-		user.setUserId(1L);
-		user.setName("张三");
-		request.getSession().setAttribute("user", user);
-		user = (PersonInfo) request.getSession().getAttribute("user");
+		PersonInfo user = (PersonInfo) request.getSession().getAttribute("user");
 		try {
 			Shop shopCondition = new Shop();
 			shopCondition.setOwner(user);
