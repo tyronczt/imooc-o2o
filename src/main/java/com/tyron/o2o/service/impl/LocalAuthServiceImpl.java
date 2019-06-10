@@ -92,9 +92,9 @@ public class LocalAuthServiceImpl implements LocalAuthService {
 		if (StringUtils.isNotBlank(username) && StringUtils.isNotBlank(password)
 				&& StringUtils.isNotBlank(newPassword)) {
 			try {
-				int effectedNum = localAuthDao.updateLocalAuth(username, password, MD5.getMd5(newPassword), new Date());
+				int effectedNum = localAuthDao.updateLocalAuth(username, MD5.getMd5(password), MD5.getMd5(newPassword), new Date());
 				if (effectedNum <= 0) {
-					throw new LocalAuthOperationException("用户账号更新失败");
+					return new LocalAuthExecution(LocalAuthStateEnum.ERROR_UPDATE);
 				} else {
 					return new LocalAuthExecution(OperationStatusEnum.SUCCESS);
 				}
