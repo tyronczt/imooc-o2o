@@ -20,9 +20,9 @@ import com.tyron.o2o.enums.OperationStatusEnum;
 import com.tyron.o2o.enums.PersonInfoStatusEnum;
 import com.tyron.o2o.enums.PersonInfoTypeEnum;
 import com.tyron.o2o.service.LocalAuthService;
+import com.tyron.o2o.service.PersonInfoService;
 import com.tyron.o2o.util.CodeUtil;
 import com.tyron.o2o.util.HttpServletRequestUtil;
-import com.tyron.o2o.util.MD5;
 
 /**
  * @Description: 本地用户信息
@@ -36,6 +36,8 @@ public class LocalAuthController {
 
 	@Autowired
 	private LocalAuthService localAuthService;
+	@Autowired
+	private PersonInfoService personInfoService;
 
 	/**
 	 * 注册账号
@@ -44,7 +46,7 @@ public class LocalAuthController {
 	@ResponseBody
 	public Map<String, Object> register(HttpServletRequest request) {
 		Map<String, Object> modelMap = new HashMap<>();
-		// 校验验证码
+		// 1、验证码校验
 		if (!CodeUtil.checkVerifyCode(request)) {
 			modelMap.put("success", false);
 			modelMap.put("errMsg", OperationStatusEnum.VERIFYCODE_ERROR.getStateInfo());
@@ -59,7 +61,7 @@ public class LocalAuthController {
 				// 2、构建账号对象
 				LocalAuth localAuth = new LocalAuth();
 				localAuth.setUsername(username);
-				localAuth.setPassword(MD5.getMd5(password));
+				localAuth.setPassword(password);
 				LocalAuthExecution e = localAuthService.saveLocalAuth(localAuth);
 				// 3、操作成功，返回结果
 				if (e.getState() == OperationStatusEnum.SUCCESS.getState()) {
@@ -71,7 +73,7 @@ public class LocalAuthController {
 					personInfo.setUserType(PersonInfoTypeEnum.CUSTOMER.getState());
 					personInfo.setEnableStatus(PersonInfoStatusEnum.ALLOW.getState());
 					personInfo.setCreateTime(new Date());
-					
+					personInfoService.insertPersonInfo(personInfo);
 				}
 			}
 		} catch (Exception e) {
@@ -100,7 +102,6 @@ public class LocalAuthController {
 		String username = HttpServletRequestUtil.getString(request, "username");
 		String password = HttpServletRequestUtil.getString(request, "password");
 		if (StringUtils.isNotBlank(username) && StringUtils.isNotBlank(password)) {
-			password = MD5.getMd5(password);
 			LocalAuth localAuth = localAuthService.getLocalAuthByUsernameAndPwd(username, password);
 			// 账号信息正确
 			if (localAuth != null) {
@@ -129,14 +130,42 @@ public class LocalAuthController {
 		}
 		return modelMap;
 	}
-	
+
 	/**
 	 * 修改密码
 	 */
-	@PostMapping(value = "modifyPwd")
+	@PostMapping(value = "changepwd")
 	@ResponseBody
-	public void modifyPwd() {
+	public Map<String, Object> changePwd(HttpServletRequest request) {
+		Map<String, Object> modelMap = new HashMap<>();
+		// 1、验证码
+		if (!CodeUtil.checkVerifyCode(request)) {
+			modelMap.put("success", false);
+			modelMap.put("errMsg", OperationStatusEnum.VERIFYCODE_ERROR.getStateInfo());
+			return modelMap;
+		}
 
+		// 2、获取参数
+		String username = HttpServletRequestUtil.getString(request, "username");
+		String password = HttpServletRequestUtil.getString(request, "password");
+		String newPassword = HttpServletRequestUtil.getString(request, "newPassword");
+		// 空值验证
+		if (StringUtils.isNotBlank(username) && StringUtils.isNotBlank(password)
+				&& StringUtils.isNotBlank(newPassword)) {
+			// 修改密码
+			LocalAuthExecution lae = localAuthService.modifyLocalAuth(username, password, newPassword);
+			// 操作成功
+			if (lae.getState() == OperationStatusEnum.SUCCESS.getState()) {
+				modelMap.put("success", true);
+			} else {
+				modelMap.put("success", false);
+				modelMap.put("errMsg", lae.getStateInfo());
+			}
+		} else {
+			modelMap.put("success", false);
+			modelMap.put("errMsg", "请输入有效信息");
+		}
+		return modelMap;
 	}
 
 	/**
@@ -144,8 +173,12 @@ public class LocalAuthController {
 	 */
 	@PostMapping(value = "logout")
 	@ResponseBody
-	public void logout() {
-
+	public Map<String, Object> logout(HttpServletRequest request) {
+		Map<String, Object> modelMap = new HashMap<String, Object>();
+		request.getSession().setAttribute("user", null);
+		request.getSession().setAttribute("shopList", null);
+		request.getSession().setAttribute("currentShop", null);
+		modelMap.put("success", true);
+		return modelMap;
 	}
-
 }
