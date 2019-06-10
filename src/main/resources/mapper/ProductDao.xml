@@ -29,7 +29,7 @@
 			<result column="owner_id" property="ownerId" />
 			<result column="shop_name" property="shopName" />
 		</association>
-		<!-- 一对多使用collection product中的属性为productImgList，并且是通过库表中的product_id关联起来的，保存的类型为com.imooc.myo2o.entity.ProductImg -->
+		<!-- 一对多使用collection product中的属性为productImgList，并且是通过库表中的product_id关联起来的，保存的类型为com.imooc.o2o.entity.ProductImg -->
 		<collection property="productImgList" column="product_id" ofType="com.tyron.o2o.entity.ProductImg">
 			<id column="product_img_id" property="productImgId" />
 			<result column="pi_img_addr" property="piImgAddr" />
