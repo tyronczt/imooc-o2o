@@ -30,7 +30,10 @@ $(function() {
 			success : function(data) {
 				if (data.success) {
 					$.toast('登录成功！');
-					window.location.href = '/o2o/shopadmin/shoplist';
+					// 延时2秒
+					setTimeout(function () {
+						window.location.href = '/o2o/shopadmin/shoplist';
+					}, 2000);
 				} else {
 					$.toast(data.errMsg);
 					loginCount++;
