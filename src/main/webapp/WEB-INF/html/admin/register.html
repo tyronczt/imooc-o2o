@@ -25,7 +25,8 @@
 						</div>
 						<div class="item-inner">
 							<div class="item-input">
-								<input type="text" placeholder="用户名" id="username">
+								<!-- onBlur为当输入框失去焦点后事件 -->
+								<input type="text" placeholder="用户名" id="username" onBlur="checkUsername()">
 							</div>
 						</div>
 					</div>
@@ -37,7 +38,7 @@
 						</div>
 						<div class="item-inner">
 							<div class="item-input">
-								<input type="password" placeholder="密码" id="password">
+								<input type="password" placeholder="至少6位密码" id="password">
 							</div>
 						</div>
 					</div>
