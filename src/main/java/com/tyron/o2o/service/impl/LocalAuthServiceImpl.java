@@ -43,6 +43,17 @@ public class LocalAuthServiceImpl implements LocalAuthService {
 	/*
 	 * (non-Javadoc)
 	 * 
+	 * @see com.tyron.o2o.service.LocalAuthService#getLocalAuthByUsername(java.lang.
+	 * String)
+	 */
+	@Override
+	public LocalAuth getLocalAuthByUsername(String username) {
+		return localAuthDao.queryLocalByUsername(username);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.tyron.o2o.service.LocalAuthService#getLocalAuthByUserId(long)
 	 */
 	@Override
@@ -92,7 +103,8 @@ public class LocalAuthServiceImpl implements LocalAuthService {
 		if (StringUtils.isNotBlank(username) && StringUtils.isNotBlank(password)
 				&& StringUtils.isNotBlank(newPassword)) {
 			try {
-				int effectedNum = localAuthDao.updateLocalAuth(username, MD5.getMd5(password), MD5.getMd5(newPassword), new Date());
+				int effectedNum = localAuthDao.updateLocalAuth(username, MD5.getMd5(password), MD5.getMd5(newPassword),
+						new Date());
 				if (effectedNum <= 0) {
 					return new LocalAuthExecution(LocalAuthStateEnum.ERROR_UPDATE);
 				} else {

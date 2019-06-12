@@ -22,6 +22,14 @@ public interface LocalAuthService {
 	LocalAuth getLocalAuthByUsernameAndPwd(String username, String password);
 
 	/**
+	 * 根据用户名查询本地用户信息
+	 * 
+	 * @param username 用户名
+	 * @return 用户信息
+	 */
+	LocalAuth getLocalAuthByUsername(String username);
+
+	/**
 	 * 根据用户ID查询本地用户信息
 	 * 
 	 * @param localAuthId 用户ID
@@ -41,9 +49,9 @@ public interface LocalAuthService {
 	/**
 	 * 修改本地账号登录密码
 	 * 
-	 * @param username     用户名
-	 * @param password     原密码
-	 * @param newPassword  新密码
+	 * @param username    用户名
+	 * @param password    原密码
+	 * @param newPassword 新密码
 	 * @return 操作返回信息
 	 * @throws LocalAuthOperationException 继承runtimeException结合事务使用
 	 */

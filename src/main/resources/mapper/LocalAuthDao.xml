@@ -95,4 +95,21 @@
 		AND
 		l.password = #{password}
 	</select>
+	
+	<select id="queryLocalByUsername" resultMap="localAuthResultMap">
+		SELECT
+		l.local_auth_id,
+		l.username,
+		l.password,
+		l.create_time,
+		l.last_edit_time
+		FROM
+		tb_local_auth l
+		LEFT JOIN
+		tb_person_info p
+		ON l.local_auth_id = p.local_auth_id
+		WHERE
+		l.username = #{username}
+		AND p.enable_status = 1
+	</select>
 </mapper>

@@ -52,33 +52,53 @@ public class LocalAuthController {
 			modelMap.put("errMsg", OperationStatusEnum.VERIFYCODE_ERROR.getStateInfo());
 			return modelMap;
 		}
-		try {
-			// 1、接收并转化相应参数
-			String username = HttpServletRequestUtil.getString(request, "username");
-			String password = HttpServletRequestUtil.getString(request, "password");
-			// 判断
-			if (StringUtils.isNotBlank(username) && StringUtils.isNotBlank(password)) {
-				// 2、构建账号对象
-				LocalAuth localAuth = new LocalAuth();
-				localAuth.setUsername(username);
-				localAuth.setPassword(password);
-				LocalAuthExecution e = localAuthService.saveLocalAuth(localAuth);
-				// 3、操作成功，返回结果
-				if (e.getState() == OperationStatusEnum.SUCCESS.getState()) {
-					modelMap.put("success", true);
-					// 同时创建用户信息
-					PersonInfo personInfo = new PersonInfo();
-					personInfo.setLocalAuthId(localAuth.getLocalAuthId());
-					personInfo.setName(username);
-					personInfo.setUserType(PersonInfoTypeEnum.CUSTOMER.getState());
-					personInfo.setEnableStatus(PersonInfoStatusEnum.ALLOW.getState());
-					personInfo.setCreateTime(new Date());
-					personInfoService.insertPersonInfo(personInfo);
-				}
+		// 1、接收并转化相应参数
+		String username = HttpServletRequestUtil.getString(request, "username");
+		String password = HttpServletRequestUtil.getString(request, "password");
+		// 判断
+		if (StringUtils.isNotBlank(username) && StringUtils.isNotBlank(password)) {
+			// 2、构建账号对象
+			LocalAuth localAuth = new LocalAuth();
+			localAuth.setUsername(username);
+			localAuth.setPassword(password);
+			LocalAuthExecution e = localAuthService.saveLocalAuth(localAuth);
+			// 3、操作成功，返回结果
+			if (e.getState() == OperationStatusEnum.SUCCESS.getState()) {
+				// 同时创建用户信息
+				PersonInfo personInfo = new PersonInfo();
+				personInfo.setLocalAuthId(localAuth.getLocalAuthId());
+				personInfo.setName(username);
+				personInfo.setUserType(PersonInfoTypeEnum.CUSTOMER.getState());
+				personInfo.setEnableStatus(PersonInfoStatusEnum.ALLOW.getState());
+				personInfo.setCreateTime(new Date());
+				personInfoService.insertPersonInfo(personInfo);
+				modelMap.put("success", true);
 			}
-		} catch (Exception e) {
+		} else {
 			modelMap.put("success", false);
-			modelMap.put("errorMsg", e.getMessage());
+			modelMap.put("errMsg", "用户名和密码均不能为空");
+			return modelMap;
+		}
+		return modelMap;
+	}
+
+	/**
+	 * 检查注册的用户名是否已注册
+	 */
+	@PostMapping(value = "/checkusername")
+	@ResponseBody
+	public Map<String, Object> checkUsername(HttpServletRequest request) {
+		Map<String, Object> modelMap = new HashMap<>();
+		String username = HttpServletRequestUtil.getString(request, "username");
+		if (StringUtils.isNotBlank(username)) {
+			LocalAuth localAuth = localAuthService.getLocalAuthByUsername(username);
+			// 当前用户名的用户已存在
+			if (localAuth != null) {
+				modelMap.put("success", false);
+				modelMap.put("errMsg", "用户名已存在，请重新输入！");
+			} else {
+				modelMap.put("success", true);
+			}
 		}
 		return modelMap;
 	}
