@@ -52,16 +52,12 @@ DROP TABLE IF EXISTS `tb_local_auth`;
 
 CREATE TABLE `tb_local_auth` (
   `local_auth_id` int(10) NOT NULL AUTO_INCREMENT COMMENT 'ID',
-  `user_id` int(10) NOT NULL COMMENT '用户ID',
   `username` varchar(128) NOT NULL COMMENT '用户名',
   `password` varchar(128) NOT NULL COMMENT '密码',
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
   `last_edit_time` datetime DEFAULT NULL COMMENT '最新修改时间',
-  PRIMARY KEY (`local_auth_id`),
-  UNIQUE KEY `uk_local_profile` (`username`),
-  KEY `fk_localauth_profile` (`user_id`),
-  CONSTRAINT `fk_localauth_profile` FOREIGN KEY (`user_id`) REFERENCES `tb_person_info` (`user_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='本地用户信息';
+  PRIMARY KEY (`local_auth_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8 COMMENT='本地用户信息';
 
 /*Table structure for table `tb_person_info` */
 
@@ -69,6 +65,7 @@ DROP TABLE IF EXISTS `tb_person_info`;
 
 CREATE TABLE `tb_person_info` (
   `user_id` int(10) NOT NULL AUTO_INCREMENT COMMENT '用户ID',
+  `local_auth_id` int(10) NOT NULL COMMENT '账号ID',
   `name` varchar(32) DEFAULT NULL COMMENT '用户姓名',
   `profile_img` varchar(1024) DEFAULT NULL COMMENT '头像',
   `email` varchar(1024) DEFAULT NULL COMMENT '邮箱',
@@ -78,7 +75,7 @@ CREATE TABLE `tb_person_info` (
   `create_time` timestamp NULL DEFAULT NULL COMMENT '创建时间',
   `last_edit_time` timestamp NULL DEFAULT NULL COMMENT '最新修改时间',
   PRIMARY KEY (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='用户信息';
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8 COMMENT='用户信息';
 
 /*Table structure for table `tb_product` */
 
@@ -161,7 +158,7 @@ CREATE TABLE `tb_shop` (
   CONSTRAINT `fk_shop_area` FOREIGN KEY (`area_id`) REFERENCES `tb_area` (`area_id`),
   CONSTRAINT `fk_shop_category` FOREIGN KEY (`shop_category_id`) REFERENCES `tb_shop_category` (`shop_category_id`),
   CONSTRAINT `fk_shop_profile` FOREIGN KEY (`owner_id`) REFERENCES `tb_person_info` (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8 COMMENT='店铺信息';
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8 COMMENT='店铺信息';
 
 /*Table structure for table `tb_shop_category` */
 
