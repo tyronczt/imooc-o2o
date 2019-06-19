@@ -55,7 +55,7 @@ $(function() {
 					$.toast('密码修改成功！');
 					// 延时2秒
 					setTimeout(function () {
-						window.location.href = '/o2o/admin/login';
+						window.location.href = '/o2o/admin/login?userType=' + getQueryString('userType');
 					}, 2000);
 				} else {
 					$.toast(data.errMsg);
@@ -66,6 +66,6 @@ $(function() {
 	});
 
 	$('#back').click(function() {
-		window.location.href = '/o2o/shopadmin/shoplist';
+		window.location.href = '/o2o/admin/login?userType=' + getQueryString('userType');
 	});
 });

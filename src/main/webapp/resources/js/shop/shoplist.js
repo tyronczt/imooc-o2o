@@ -57,7 +57,7 @@ $(function() {
 	
 	// 修改密码
 	$('#change-pwd').click(function() {
-		window.location.href = '/o2o/admin/changepwd';
+		window.location.href = '/o2o/admin/changepwd?userType=back';
 	});
 	
 	// 退出登录
@@ -70,7 +70,7 @@ $(function() {
 			cache : false,
 			success : function(data) {
 				if (data.success) {
-					window.location.href = '/o2o/admin/login';
+					window.location.href = '/o2o/admin/login?userType=back';
 				}
 			},
 			error : function(data, error) {

@@ -1,4 +1,5 @@
 $(function() {
+	var userType = getQueryString('userType');
 	var loginUrl = '/o2o/user/login';
 	var loginCount = 0;
 
@@ -25,15 +26,29 @@ $(function() {
 				username : username,
 				password : password,
 				verifyCodeActual : verifyCodeActual,
-				needVerify : needVerify
+				needVerify : needVerify,
+				userType : userType
 			},
 			success : function(data) {
 				if (data.success) {
-					$.toast('登录成功！');
-					// 延时2秒
-					setTimeout(function () {
-						window.location.href = '/o2o/shopadmin/shoplist';
-					}, 2000);
+					// 延时1秒
+					setTimeout(function() {
+						$.toast('登录成功！');
+					}, 1000);
+
+					// 没有后台登录权限
+					if (data.errMsg) {
+						$.toast(data.errMsg);
+					} else {
+						// 延时3秒
+						setTimeout(function() {
+							window.location.href = '/o2o/shopadmin/shoplist';
+						}, 3000);
+					}
+					// 延时3秒
+					setTimeout(function() {
+						window.location.href = '/o2o/front/index';
+					}, 3000);
 				} else {
 					$.toast(data.errMsg);
 					loginCount++;
@@ -46,6 +61,6 @@ $(function() {
 	});
 
 	$('#register').click(function() {
-		window.location.href = '/o2o/admin/register';
+		window.location.href = '/o2o/admin/register?userType=back';
 	});
 });

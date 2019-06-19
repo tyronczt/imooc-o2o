@@ -121,20 +121,28 @@ public class LocalAuthController {
 		// 2、获取参数
 		String username = HttpServletRequestUtil.getString(request, "username");
 		String password = HttpServletRequestUtil.getString(request, "password");
+		String userType = HttpServletRequestUtil.getString(request, "userType");
 		if (StringUtils.isNotBlank(username) && StringUtils.isNotBlank(password)) {
 			LocalAuth localAuth = localAuthService.getLocalAuthByUsernameAndPwd(username, password);
 			// 账号信息正确
 			if (localAuth != null) {
 				// 账号允许登录
 				if (localAuth.getPersonInfo().getEnableStatus().equals(PersonInfoStatusEnum.ALLOW.getState())) {
-					// 店家或管理员允许登录
-					if (localAuth.getPersonInfo().getUserType().equals(PersonInfoTypeEnum.OWNER.getState())
-							|| localAuth.getPersonInfo().getUserType().equals(PersonInfoTypeEnum.ADMIN.getState())) {
-						modelMap.put("success", true);
+					// 后台店家或管理员允许登录
+					if (userType.equals("back")) {
 						request.getSession().setAttribute("user", localAuth.getPersonInfo());
+						if (localAuth.getPersonInfo().getUserType().equals(PersonInfoTypeEnum.OWNER.getState())
+								|| localAuth.getPersonInfo().getUserType()
+										.equals(PersonInfoTypeEnum.ADMIN.getState())) {
+							modelMap.put("success", true);
+						} else {
+							// 没有店家和管理员权限则登录前台
+							modelMap.put("success", true);
+							modelMap.put("errMsg", "非店家或管理员没有权限访问后台，访问店铺首页");
+						}
 					} else {
-						modelMap.put("success", false);
-						modelMap.put("errMsg", "非店家或管理员没有权限访问");
+						// 前台所有角色都可以登录
+						modelMap.put("success", true);
 					}
 				} else {
 					modelMap.put("success", false);

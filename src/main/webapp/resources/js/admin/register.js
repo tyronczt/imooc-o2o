@@ -42,7 +42,7 @@ $(function() {
 					$.toast('注册成功！');
 					// 延时2秒
 					setTimeout(function () {
-						window.location.href = '/o2o/admin/login';
+						window.location.href = '/o2o/admin/login?userType=' + getQueryString('userType');
 					}, 2000);
 				} else {
 					$.toast(data.errMsg);
@@ -53,9 +53,9 @@ $(function() {
 	});
 
 	$('#back').click(function() {
-		window.location.href = '/o2o/admin/login';
+		window.location.href = '/o2o/admin/login?userType=' + getQueryString('userType');
 	});
-	
+
 	// 异步检查用户名是否已存在
 	$("#username").blur(function checkUsername() {
 		var username = $('#username').val();
