@@ -54,8 +54,14 @@
 		<!-- 校验是否已登录了店家管理系统的拦截器 -->
 		<mvc:interceptor>
 			<mvc:mapping path="/shopadmin/**"/>
-			<bean id="ShopInterceptor" class="com.tyron.o2o.interceptor.shopadmin.ShopLoginInterceptor" />
+			<bean id="ShopLoginInterceptor" class="com.tyron.o2o.interceptor.shopadmin.ShopLoginInterceptor" />
 		</mvc:interceptor>
 		<!-- 校验是否对该店铺有操作权限的拦截器-->
+		<mvc:interceptor>
+			<mvc:mapping path="/shopadmin/shopoperation"/>
+			<mvc:mapping path="/shopadmin/productmanagement"/>
+			<mvc:mapping path="/shopadmin/productcategorymanagement"/>
+			<bean id="ShopPermissionInterceptor" class="com.tyron.o2o.interceptor.shopadmin.ShopPermissionInterceptor" />
+		</mvc:interceptor>
 	</mvc:interceptors>
 </beans>
