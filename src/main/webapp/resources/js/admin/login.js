@@ -39,16 +39,25 @@ $(function() {
 					// 没有后台登录权限
 					if (data.errMsg) {
 						$.toast(data.errMsg);
-					} else {
+						// 延时3秒
+						setTimeout(function() {
+							window.location.href = '/o2o/front/index';
+						}, 3000);
+					}
+					// 仅当有权限登录成功且链接中带有back属性时跳转后台
+					else if (userType == "back") {
 						// 延时3秒
 						setTimeout(function() {
 							window.location.href = '/o2o/shopadmin/shoplist';
 						}, 3000);
 					}
-					// 延时3秒
-					setTimeout(function() {
-						window.location.href = '/o2o/front/index';
-					}, 3000);
+					// 登录成功的其他情况都跳转前台
+					else {
+						// 延时3秒
+						setTimeout(function() {
+							window.location.href = '/o2o/front/index';
+						}, 3000);
+					}
 				} else {
 					$.toast(data.errMsg);
 					loginCount++;
