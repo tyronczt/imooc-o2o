@@ -28,4 +28,5 @@
 [11、Redis缓存](https://blog.csdn.net/tian330726/article/details/86619065)<br/>
 [12、用户登录、注册、修改密码](https://blog.csdn.net/tian330726/article/details/91904437)<br/>
 [13、登录、权限拦截器](https://blog.csdn.net/tian330726/article/details/93670731)<br/>
+[14、定期备份数据](https://blog.csdn.net/tian330726/article/details/93929095)<br/>
 线上演示地址：http://o2o.tyronblog.com:8088/o2o/front/index
