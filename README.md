@@ -29,4 +29,4 @@
 [12、用户登录、注册、修改密码](http://tyronblog.com/archives/o2o-12)<br/>
 [13、登录、权限拦截器](http://tyronblog.com/archives/o2o-13)<br/>
 [14、定期备份数据](http://tyronblog.com/archives/o2o-14)<br/>
-线上演示地址：http://o2o.tyronblog.com:8088/o2o/front/index
+线上演示地址：http://o2o.tyronblog.com:8090/o2o/front/index
