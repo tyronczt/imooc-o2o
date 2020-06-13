@@ -14,7 +14,7 @@
 慕课网教程：[SSM到Spring Boot-从零开发校园商铺平台-慕课网实战](https://coding.imooc.com/class/144.html)
 
 ### 项目演示
-![校园商铺演示](http://tyronblog.com/upload/2020/6/o2o-f263f0532b57477ea219dc8ecab5707d.gif)<br/>
+![校园商铺演示](https://github.com/tyronczt/imooc-o2o/blob/master/o2o.gif)<br/>
 
 ### 校园商铺搭建过程
 
